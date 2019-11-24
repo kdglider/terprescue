@@ -28,9 +28,8 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(walker src/main.cpp src/walker.cpp)
-target_link_libraries(walker ${catkin_LIBRARIES})
-add_dependencies(walker turtlebot_walker_generate_messages_cpp)
+add_executable(main src/main.cpp src/localizer.cpp)
+target_link_libraries(main ${catkin_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)

@@ -50,6 +50,7 @@
  */
 class TerpRescue {
  private:
+    ros::NodeHandle nh;
     nav_msgs::OccupancyGrid rawMap;
     nav_msgs::OccupancyGrid synthesizedMap;
 
@@ -67,19 +68,19 @@ class TerpRescue {
 
     // lidar subscriber
     ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered", 
-        1, &lidarCallback, this);
+        1, &TerpRescue::lidarCallback, this);
 
     // camera subscriber
     ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw", 
-        1, &cameraCallback, this);
+        1, &TerpRescue::cameraCallback, this);
 
     // odom subscriber
     ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw", 
-        1, &odomCallback, this);
+        1, &TerpRescue::odomCallback, this);
 
     // map subscriber
     ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw", 
-        1, &mapCallback, this);
+        1, &TerpRescue::mapCallback, this);
 
     // publisher to publish map
     ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
@@ -104,14 +105,14 @@ class TerpRescue {
      * @param    lidar data: nav_msgs::Odometry
      * @return   void
      */
-    void odomSubscriber(const nav_msgs::Odometry data);
+    void odomCallback(const nav_msgs::Odometry data);
 
     /**
      * @brief    callback function of map
      * @param    lidar data: nav_msgs::OccupancyGrid
      * @return   void
      */
-    void mapSubscriber(const nav_msgs::OccupancyGrid data);
+    void mapCallback(const nav_msgs::OccupancyGrid data);
 
  public:
     /**
@@ -135,7 +136,7 @@ class TerpRescue {
      * @brief    return current lidar data
      * @return   lidar data: vector<float>
      */
-    vector<float> getLidar();
+    std::vector<float> getLidar();
 
     /**
      * @brief    return current image data
@@ -165,7 +166,7 @@ class TerpRescue {
      * @brief    return current detected tags' information
      * @return   all current detected tags: vector of struct
      */
-    vector<struct> getTagInformation();
+    std::vector<tagInfo> getTagInformation();
 };
 
 

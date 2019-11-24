@@ -1,9 +1,8 @@
 /**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
- * @file       localizer.hpp
+ * @file       localizer.cpp
  * @date       11/23/2019
- * @brief      This class defined class of TerpRescue which is the main class of this project
- *             The class has functions to subscribe all sensor data and also calculate tag
- *             location and display map in rviz.
+ * @brief      The project will explore and generate map of one unknown environment and 
+ *             also detect tags and display tags information in rviz
  * @license    This project is released under the BSD-3-Clause License.
  *             Redistribution and use in source and binary forms, with or without
  *             modification, are permitted provided that the following conditions are met:
@@ -31,64 +30,48 @@
  *             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_LOCALIZER_H_
-#define INCLUDE_LOCALIZER_H_
-
-#include <ros/ros.h>
-#include <geometry_msgs/Pose.h>
-#include <sensor_msgs/Image.h>
-#include <vector>
+#include <localizer.hpp>
 
 /**
- * @brief The class has can use input data of lidar, camera and also robot's frame to
- *        recognize tags and get tags' location and ID
+ * @brief    recognize if there is a tag in the current image
+ * @return   void
  */
-class Localizer {
- private:
-    // tagInfo is the information of each tag, which include tag id and position
-    struct tagInfo {
-        int ID;
-        geometry_msgs::Pose position;
-    };
+void Localizer::tagRecognition() {
+}
 
-    std::vector<tagInfo> tags;  // vector of all tags information
-    std::vector<float> lidar;
-    sensor_msgs::Image camera;
+/**
+ * @brief    locate tag regarding to robot frame
+ * @return   void
+ */
+void Localizer::locateTag() {
 
-    /**
-     * @brief    recognize if there is a tag in the current image
-     * @return   void
-     */
-    void tagRecognition();
+}
 
-    /**
-     * @brief    locate tag regarding to robot frame
-     * @return   void
-     */
-    void locateTag();
+/**
+ * @brief    tranform tag location from robot frame to map frame
+ * @return   void
+ */
+void Localizer::transformationTagPosition() {
 
-    /**
-     * @brief    tranform tag location from robot frame to map frame
-     * @return   void
-     */
-    void transformationTagPosition();
+}
 
- public:
-    /**
-     * @brief    This function detects tags and also save tags information in a vector
-     * @param    lidar data: vector<float>
-     * @param    image data: sensor_msgs::Image
-     * @param    robot's currentLocation: geometry_msgs::Pose
-     * @return   void
-     */
-    void tagDetection(sensor_msgs::Image image, std::vector<float> lidar, geometry_msgs::Pose currentLocation);
+/**
+ * @brief    This function detects tags and also save tags information in a vector
+ * @param    lidar data: vector<float>
+ * @param    image data: sensor_msgs::Image
+ * @param    robot's currentLocation: geometry_msgs::Pose
+ * @return   void
+ */
+void Localizer::tagDetection(sensor_msgs::Image image, std::vector<float> lidar, geometry_msgs::Pose currentLocation) {
 
-    /**
-     * @brief    return current detected tags' information
-     * @return   a vector of tags' information
-     */
-    std::vector<tagInfo> getTagInfo();
-};
+}
 
-
-#endif  // INCLUDE_LOCALIZER_H_
+/**
+ * @brief    return current detected tags' information
+ * @return   a vector of tags' information
+ */
+std::vector<Localizer::tagInfo> Localizer::getTagInfo() {
+	tagInfo tag;
+	tags.push_back(tag);
+	return tags;
+}

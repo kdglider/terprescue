@@ -36,6 +36,8 @@ int main(int argc, char **argv) {
     ros::init(argc, argv, "terprescue");
 
     TerpRescue terpRescue;
+    ros::Rate loop_rate(10);
+
     terpRescue.detectTags();
     terpRescue.visualization();
 
