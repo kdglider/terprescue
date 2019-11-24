@@ -1,9 +1,8 @@
 /**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       localizer.hpp
  * @date       11/23/2019
- * @brief      This class defined class of TerpRescue which is the main class of this project
- *             The class has functions to subscribe all sensor data and also calculate tag
- *             location and display map in rviz.
+ * @brief      This class defined class of localizer which is the class calculating tags positions
+ *             And also recognize tag ID
  * @license    This project is released under the BSD-3-Clause License.
  *             Redistribution and use in source and binary forms, with or without
  *             modification, are permitted provided that the following conditions are met:

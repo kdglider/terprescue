@@ -1,8 +1,8 @@
 /**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       localizer.cpp
  * @date       11/23/2019
- * @brief      The project will explore and generate map of one unknown environment and 
- *             also detect tags and display tags information in rviz
+ * @brief      This class defined class of localizer which is the class calculating tags positions
+ *             And also recognize tag ID
  * @license    This project is released under the BSD-3-Clause License.
  *             Redistribution and use in source and binary forms, with or without
  *             modification, are permitted provided that the following conditions are met:
@@ -71,7 +71,7 @@ void Localizer::tagDetection(sensor_msgs::Image image, std::vector<float> lidar,
  * @return   a vector of tags' information
  */
 std::vector<Localizer::tagInfo> Localizer::getTagInfo() {
-	tagInfo tag;
-	tags.push_back(tag);
-	return tags;
+    tagInfo tag;
+    tags.push_back(tag);
+    return tags;
 }

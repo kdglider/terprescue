@@ -28,7 +28,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(main src/main.cpp src/localizer.cpp)
+add_executable(main src/main.cpp src/localizer.cpp src/terprescue.cpp)
 target_link_libraries(main ${catkin_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
