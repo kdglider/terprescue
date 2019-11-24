@@ -1,5 +1,5 @@
 /**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
- * @file       main.cpp
+ * @file       terprescue.hpp
  * @date       11/23/2019
  * @brief      This class defined class of TerpRescue which is the main class of this project
  *             The class has functions to subscribe all sensor data and also calculate tag
@@ -42,6 +42,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 
 #include <vector>
+#include <localizer.hpp>
 
 /**
  * @brief The class has functions to subscribe all sensor data and also calculate tag
