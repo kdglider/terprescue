@@ -1,5 +1,7 @@
 # TerpRescue Package Locator Robot
-Add Travis, Coveralls and license badges here
+[![Build Status](https://travis-ci.com/kdglider/terprescue.svg?branch=master)](https://travis-ci.com/kdglider/terprescue)
+[![Coverage Status](https://coveralls.io/repos/github/kdglider/terprescue/badge.svg?branch=master)](https://coveralls.io/github/kdglider/terprescue?branch=master)
+![GitHub](https://img.shields.io/github/license/kdglider/terprescue)
 ---
 
 
