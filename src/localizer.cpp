@@ -31,13 +31,14 @@
  */
 
 #include <opencv2/opencv.hpp>
+#include <cv_bridge/cv_bridge.h>
 #include <localizer.hpp>
 
 /**
  * @brief    recognize if there is a tag in the current image
  * @return   void
  */
-void Localizer::tagRecognition() {
+bool Localizer::tagRecognition() {
 }
 
 /**
@@ -45,7 +46,14 @@ void Localizer::tagRecognition() {
  * @return   void
  */
 void Localizer::locateTag() {
-
+  cv::OutputArray tagContourPoints {cv::noArray()};
+  cv::Mat cvImageWithTag;
+  cv_bridge::CvImagePtr cvPtr;
+  if(tagRecognition()){
+    // Image encoding needs to be updated.
+    cvPtr = cv_bridge::toCvCopy(camera, sensor_msgs::image_encodings::BGR8);
+    cvImageWithTag = cvPtr->image;
+  }
 }
 
 /**
