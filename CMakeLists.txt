@@ -10,6 +10,7 @@ find_package(
     std_msgs
     message_generation
     tf
+    cv_bridge
 )
 find_package(OpenCV REQUIRED)
 
