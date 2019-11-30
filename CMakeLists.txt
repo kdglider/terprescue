@@ -31,6 +31,8 @@ include_directories(
     ${OpenCV_INCLUDE_DIRS}
 )
 
+message("\n\nOPENCV VERSION:\n" ${OpenCV_INCLUDE_DIRS} "\n!!!!\n\n")
+
 add_executable(main src/main.cpp src/localizer.cpp src/terprescue.cpp)
 target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
