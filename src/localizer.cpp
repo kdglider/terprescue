@@ -31,6 +31,7 @@
  */
 
 #include <opencv2/opencv.hpp>
+#include <opencv2/objdetect.hpp>
 #include <cv_bridge/cv_bridge.h>
 #include <localizer.hpp>
 
@@ -47,8 +48,11 @@ bool Localizer::tagRecognition() {
  */
 void Localizer::locateTag() {
   cv::OutputArray tagContourPoints {cv::noArray()};
+  cv::OutputArray straightQr {cv::noArray()};
   cv::Mat cvImageWithTag;
   cv_bridge::CvImagePtr cvPtr;
+  //Seems version 3.4.2 or lower does not have QR code detector class, and ROS-kinetic has OpenCV 3.3.1
+  //cv::objdetect::QRCodeDetector qrDetector;
   if(tagRecognition()){
     // Image encoding needs to be updated.
     cvPtr = cv_bridge::toCvCopy(camera, sensor_msgs::image_encodings::BGR8);
