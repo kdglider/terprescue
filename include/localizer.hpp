@@ -56,9 +56,9 @@ class Localizer {
 
     /**
      * @brief    recognize if there is a tag in the current image
-     * @return   void
+     * @return   bool
      */
-    void tagRecognition();
+    bool tagRecognition();
 
     /**
      * @brief    locate tag regarding to robot frame
