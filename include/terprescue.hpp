@@ -42,131 +42,141 @@
 #include <nav_msgs/OccupancyGrid.h>
 
 #include <vector>
+#include <string>
+
 #include <localizer.hpp>
 
 /**
  * @brief The class has functions to subscribe all sensor data and also calculate tag
- *             location and display map in rviz.
+ *             location and display map in RViz.
  */
 class TerpRescue {
- private:
-    ros::NodeHandle nh;
-    nav_msgs::OccupancyGrid rawMap;
-    nav_msgs::OccupancyGrid synthesizedMap;
+    private:
+        ros::NodeHandle nh;
 
-    // tagInfo is the information of each tag, which include tag id and position
-    struct tagInfo {
-        int ID;
-        geometry_msgs::Pose position;
-    };
+        // Structure of a tag; contains the ID and pose 
+        struct tag {
+            string ID;                      // Decoded tag ID 
+            geometry_msgs::Pose tagPose;    // Tag pose in the world frame
+        };
 
-    std::vector<tagInfo> tags;  // vector of all tags information
-    std::vector<float> lidar;
-    sensor_msgs::Image camera;
+        std::vector<tag> tagList;       // List of all located tags (packages)
 
-    Localizer tagLocalizer;  // created instance of localizer to detect tag's location
+        geometry_msgs::Pose robotPose;      // Current robot pose
 
-    // lidar subscriber
-    ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered", 
-        1, &TerpRescue::lidarCallback, this);
+        nav_msgs::OccupancyGrid rawMap;     // Raw map from gmapping
 
-    // camera subscriber
-    ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw", 
-        1, &TerpRescue::cameraCallback, this);
+        nav_msgs::OccupancyGrid synthesizedMap;     // Synthesized map with package locations
+        
+        std::vector<float> lidar;           // LIDAR data
 
-    // odom subscriber
-    ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw", 
-        1, &TerpRescue::odomCallback, this);
+        sensor_msgs::Image cameraImage;     // Camera image data
 
-    // map subscriber
-    ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw", 
-        1, &TerpRescue::mapCallback, this);
-
-    // publisher to publish map
-    ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
+        Localizer tagLocalizer;             // Instatiate a tag localizer
 
 
-    /**
-     * @brief    callback function of lidar
-     * @param    lidar data: sensor_msgs::LaserScan
-     * @return   void
-     */
-    void lidarCallback(const sensor_msgs::LaserScan data);
+        // LIDAR subscriber
+        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered", 
+            1, &TerpRescue::lidarCallback, this);
 
-    /**
-     * @brief    callback function of camera
-     * @param    lidar data: sensor_msgs::Image
-     * @return   void
-     */
-    void cameraCallback(const sensor_msgs::Image data);
+        // Camera subscriber
+        ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw", 
+            1, &TerpRescue::cameraCallback, this);
 
-    /**
-     * @brief    callback function of odom
-     * @param    lidar data: nav_msgs::Odometry
-     * @return   void
-     */
-    void odomCallback(const nav_msgs::Odometry data);
+        // Odometry subscriber
+        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw", 
+            1, &TerpRescue::odomCallback, this);
 
-    /**
-     * @brief    callback function of map
-     * @param    lidar data: nav_msgs::OccupancyGrid
-     * @return   void
-     */
-    void mapCallback(const nav_msgs::OccupancyGrid data);
+        // Raw map subscriber
+        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw", 
+            1, &TerpRescue::mapCallback, this);
 
- public:
-    /**
-     * @brief    Constructor of the class which initialize parameters
-     */
-    TerpRescue();
+        // Synthesized map publisher
+        ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
 
-    /**
-     * @brief    display synthesized map in rviz
-     * @return   void
-     */
-    void visualization();
 
-    /**
-     * @brief    use sensor datas to detect tags and get their locations
-     * @return   void
-     */
-    void detectTags();
+        /**
+         * @brief    callback function of lidar
+         * @param    lidar data: sensor_msgs::LaserScan
+         * @return   void
+         */
+        void lidarCallback(const sensor_msgs::LaserScan data);
 
-    /**
-     * @brief    return current lidar data
-     * @return   lidar data: vector<float>
-     */
-    std::vector<float> getLidar();
+        /**
+         * @brief    callback function of camera
+         * @param    lidar data: sensor_msgs::Image
+         * @return   void
+         */
+        void cameraCallback(const sensor_msgs::Image data);
 
-    /**
-     * @brief    return current image data
-     * @return   camera data: sensor_msgs::Image
-     */
-    sensor_msgs::Image getCamera();
+        /**
+         * @brief    callback function of odom
+         * @param    lidar data: nav_msgs::Odometry
+         * @return   void
+         */
+        void odomCallback(const nav_msgs::Odometry data);
 
-    /**
-     * @brief    return current map data from gmapping
-     * @return   map data: nav_msgs::OccupancyGrid
-     */
-    nav_msgs::OccupancyGrid getRawMap();
+        /**
+         * @brief    callback function of map
+         * @param    lidar data: nav_msgs::OccupancyGrid
+         * @return   void
+         */
+        void mapCallback(const nav_msgs::OccupancyGrid data);
 
-    /**
-     * @brief    return synthesized map data include detected tags
-     * @return   synthesized map data: nav_msgs::OccupancyGrid
-     */
-    nav_msgs::OccupancyGrid getSynthesizedMap();
 
-    /**
-     * @brief    return current pose of robot
-     * @return   current robot's location data: geometry_msgs::Pose
-     */
-    geometry_msgs::Pose getCurrentLocation();
+    public:
+        /**
+         * @brief    Constructor of the class which initialize parameters
+         */
+        TerpRescue();
 
-    /**
-     * @brief    return current detected tags' information
-     * @return   all current detected tags: vector of struct
-     */
-    std::vector<tagInfo> getTagInformation();
+        /**
+         * @brief    display synthesized map in rviz
+         * @return   void
+         */
+        void visualization();
+
+        /**
+         * @brief    use sensor datas to detect tags and get their locations
+         * @return   void
+         */
+        void detectTags();
+
+        /**
+         * @brief    Return current lidar data
+         * @return   lidar
+         */
+        std::vector<float> getLidar();
+
+        /**
+         * @brief    Return current image data
+         * @return   cameraImage
+         */
+        sensor_msgs::Image getCameraImage();
+
+        /**
+         * @brief    Return current map data from gmapping
+         * @return   rawMap
+         */
+        nav_msgs::OccupancyGrid getRawMap();
+
+        /**
+         * @brief    Return synthesized map data include detected tags
+         * @return   synthesizedMap
+         */
+        nav_msgs::OccupancyGrid getSynthesizedMap();
+
+        /**
+         * @brief    Return current pose of robot
+         * @return   robotPose
+         */
+        geometry_msgs::Pose getRobotPose();
+
+        /**
+         * @brief    Return current tag list
+         * @return   tagList
+         */
+        std::vector<tagInfo> getTagList();
 };
 
 

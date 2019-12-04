@@ -33,115 +33,65 @@
 
 #include <terprescue.hpp>
 
-/**
- * @brief    callback function of lidar
- * @param    lidar data: sensor_msgs::LaserScan
- * @return   void
- */
+
 void TerpRescue::lidarCallback(const sensor_msgs::LaserScan data) {
 
 }
 
-/**
- * @brief    callback function of camera
- * @param    lidar data: sensor_msgs::Image
- * @return   void
- */
+
 void TerpRescue::cameraCallback(const sensor_msgs::Image data) {
 
 }
 
-/**
- * @brief    callback function of odom
- * @param    lidar data: nav_msgs::Odometry
- * @return   void
- */
+
 void TerpRescue::odomCallback(const nav_msgs::Odometry data) {
 
 }
 
-/**
- * @brief    callback function of map
- * @param    lidar data: nav_msgs::OccupancyGrid
- * @return   void
- */
+
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
 
 }
 
 
-/**
- * @brief    Constructor of the class which initialize parameters
- */
 TerpRescue::TerpRescue() {
 }
 
-/**
- * @brief    display synthesized map in rviz
- * @return   void
- */
+
 void TerpRescue::visualization() {
 }
 
-/**
- * @brief    use sensor datas to detect tags and get their locations
- * @return   void
- */
+
 void TerpRescue::detectTags() {
 
 }
 
-/**
- * @brief    return current lidar data
- * @return   lidar data: vector<float>
- */
+
 std::vector<float> TerpRescue::getLidar() {
-    std::vector<float> lidar;
     return lidar;
 }
 
-/**
- * @brief    return current image data
- * @return   camera data: sensor_msgs::Image
- */
-sensor_msgs::Image TerpRescue::getCamera() {
-    sensor_msgs::Image image;
-    return image;
+
+sensor_msgs::Image TerpRescue::getCameraImage() {
+    return cameraImage;
 }
 
-/**
- * @brief    return current map data from gmapping
- * @return   map data: nav_msgs::OccupancyGrid
- */
+
 nav_msgs::OccupancyGrid TerpRescue::getRawMap() {
-    nav_msgs::OccupancyGrid grid;
-    return grid;
+    return rawMap;
 }
 
-/**
- * @brief    return synthesized map data include detected tags
- * @return   synthesized map data: nav_msgs::OccupancyGrid
- */
+
 nav_msgs::OccupancyGrid TerpRescue::getSynthesizedMap() {
-    nav_msgs::OccupancyGrid grid;
-    return grid;
+    return synthesizedMap;
 }
 
-/**
- * @brief    return current pose of robot
- * @return   current robot's location data: geometry_msgs::Pose
- */
-geometry_msgs::Pose TerpRescue::getCurrentLocation() {
-    geometry_msgs::Pose pose;
-    return pose;
+
+geometry_msgs::Pose TerpRescue::getRobotPose() {
+    return robotPose;
 }
 
-/**
- * @brief    return current detected tags' information
- * @return   all current detected tags: vector of struct
- */
-std::vector<TerpRescue::tagInfo> TerpRescue::getTagInformation() {
-    TerpRescue::tagInfo tag;
-    tags.push_back(tag);
-    return tags;
+
+std::vector<TerpRescue::tagInfo> TerpRescue::getTagList() {
+    return tagList;
 }
