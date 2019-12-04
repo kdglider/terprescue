@@ -51,6 +51,14 @@ To be completed later
 ## Build Instructions
 ```
 	sudo apt-get install ros-kinetic-turtlebot3-*
+	mkdir -r terp_catkin/src && cd terp_catkin/src
+	git clone https://github.com/kdglider/terprescue.git
+	cd terprescue
+	export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(pwd)/models
+
+	cd ../../..
+	catkin_make
+ 
 ```
 
 ## Run Unit Tests
