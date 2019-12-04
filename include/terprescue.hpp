@@ -54,9 +54,9 @@ class TerpRescue {
     private:
         ros::NodeHandle nh;
 
-        // Structure of a tag; contains the ID and pose 
+        // Structure of a tag; contains the ID and pose
         struct tag {
-            string ID;                      // Decoded tag ID 
+            std::string ID;                      // Decoded tag ID
             geometry_msgs::Pose tagPose;    // Tag pose in the world frame
         };
 
@@ -67,7 +67,7 @@ class TerpRescue {
         nav_msgs::OccupancyGrid rawMap;     // Raw map from gmapping
 
         nav_msgs::OccupancyGrid synthesizedMap;     // Synthesized map with package locations
-        
+
         std::vector<float> lidar;           // LIDAR data
 
         sensor_msgs::Image cameraImage;     // Camera image data
@@ -76,19 +76,19 @@ class TerpRescue {
 
 
         // LIDAR subscriber
-        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered", 
+        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered",
             1, &TerpRescue::lidarCallback, this);
 
         // Camera subscriber
-        ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw", 
+        ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw",
             1, &TerpRescue::cameraCallback, this);
 
         // Odometry subscriber
-        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw", 
+        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw",
             1, &TerpRescue::odomCallback, this);
 
         // Raw map subscriber
-        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw", 
+        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw",
             1, &TerpRescue::mapCallback, this);
 
         // Synthesized map publisher
@@ -176,7 +176,7 @@ class TerpRescue {
          * @brief    Return current tag list
          * @return   tagList
          */
-        std::vector<tagInfo> getTagList();
+        std::vector<tag> getTagList();
 };
 
 
