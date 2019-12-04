@@ -10,7 +10,9 @@ find_package(
     std_msgs
     message_generation
     tf
+    cv_bridge
 )
+find_package(OpenCV REQUIRED)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
@@ -26,10 +28,13 @@ catkin_package()
 include_directories(
     include
     ${catkin_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
 )
 
+message("\n\nOPENCV VERSION:\n" ${OpenCV_INCLUDE_DIRS} "\n!!!!\n\n")
+
 add_executable(main src/main.cpp src/localizer.cpp src/terprescue.cpp)
-target_link_libraries(main ${catkin_LIBRARIES})
+target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
