@@ -49,8 +49,9 @@ To be completed later
 
 
 ## Build Instructions
-To be completed later
-
+```
+	sudo apt-get install ros-kinetic-turtlebot3-*
+```
 
 ## Run Unit Tests
 To be completed later
