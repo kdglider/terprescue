@@ -92,6 +92,6 @@ geometry_msgs::Pose TerpRescue::getRobotPose() {
 }
 
 
-std::vector<TerpRescue::tagInfo> TerpRescue::getTagList() {
+std::vector<TerpRescue::tag> TerpRescue::getTagList() {
     return tagList;
 }
