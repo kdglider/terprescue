@@ -32,6 +32,7 @@
  */
 
 #include <terprescue.hpp>
+#include <iostream>
 
 
 void TerpRescue::lidarCallback(const sensor_msgs::LaserScan data) {
@@ -50,6 +51,22 @@ void TerpRescue::odomCallback(const nav_msgs::Odometry data) {
 
 
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
+
+}
+
+void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
+  auto markerList = msgs.markers;
+  for(auto msg : markerList){
+    auto arId = msg.id;
+    const geometry_msgs::PoseStamped arPoseStamped = msg.pose;
+    const geometry_msgs::Pose arPose= arPoseStamped.pose;
+    const geometry_msgs::Point arPoint = arPose.position;
+    float x = arPoint.x;
+    float y = arPoint.y;
+    float z = arPoint.z;
+    std::cout<<"AR ID: "<<arId<<std::endl;
+    std::cout<<"AR Position: "<<x<<","<<y<<","<<z<<std::endl;
+  }
 
 }
 
