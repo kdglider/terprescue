@@ -30,14 +30,32 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
 )
+include_directories(vendor/googletest)
 
 message("\n\nOPENCV VERSION:\n" ${OpenCV_INCLUDE_DIRS} "\n!!!!\n\n")
 
-add_executable(main src/main.cpp src/localizer.cpp src/terprescue.cpp)
-target_link_libraries(main ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
+add_executable(terprescue src/main.cpp src/localizer.cpp src/terprescue.cpp)
+target_link_libraries(terprescue ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
-    #add_rostest_gtest(serviceTest launch/serviceTest.test test/test.cpp)
-    #target_link_libraries(serviceTest ${catkin_LIBRARIES})
+    find_package(gtest)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
+
+    add_rostest_gtest(
+    terprescueTest
+    test/main.cpp
+    test/LocalizerTest.cpp
+    test/terprescueTesting.test
+
+    src/localizer.cpp
+    )
+
+    target_link_libraries(terprescueTest ${catkin_LIBRARIES} ${OpenCV_LIBS})
+
+    add_dependencies(
+      terprescueTest
+      terprescue
+      ${catkin_EXPORTED_TARGETS}
+    )
 endif()
