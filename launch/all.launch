@@ -1,34 +1,4 @@
 <launch>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    <arg name="world_name" value="$(find terprescue)/worlds/darpa.world"/>
-    <arg name="paused" value="false"/>
-    <arg name="use_sim_time" value="true"/>
-    <arg name="gui" value="true"/>
-    <arg name="headless" value="false"/>
-    <arg name="debug" value="false"/>
-  </include>
-
-  <arg name="ns"     default="turtlebot"/>
-  <include file="$(find terprescue)/launch/turtlebot3_base.launch">
-    <arg name="model" value="waffle"/>
-    <arg name="ns"    value="$(arg ns)"/>
-    <arg name="y"     value="-6.0"/>
-    <arg name="z"     value="0.5"/>
-  </include>
-
-  <node type="rviz" name="rviz1" pkg="rviz" args="-d $(find terprescue)/rviz/rviz.rviz" />
-
-  <arg name="marker_size" default="4.4" />
-  <arg name="max_new_marker_error" default="0.08" />
-  <arg name="max_track_error" default="0.2" />
-  <arg name="output_frame" default="/turtlebot/camera_link" />
-  <node name="ar_track_alvar" pkg="ar_track_alvar" type="individualMarkers" respawn="false">
-    <param name="marker_size"           type="double" value="$(arg marker_size)" />
-    <param name="max_new_marker_error"  type="double" value="$(arg max_new_marker_error)" />
-    <param name="max_track_error"       type="double" value="$(arg max_track_error)" />
-    <param name="output_frame"          type="string" value="$(arg output_frame)" />
-
-    <remap from="camera_image"  to="/turtlebot/camera/depth/points" />
-    <remap from="camera_info"   to="/turtlebot/camera/depth/camera_info" />
-  </node>
+  <include file="$(find terprescue)/launch/includes/bring_up.launch"/>
+  <include file="$(find terprescue)/launch/includes/ar_detector.launch"/>
 </launch>

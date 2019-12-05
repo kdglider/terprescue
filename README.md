@@ -67,8 +67,7 @@ To be completed later
 
 ## Run Demonstration 
 ```
-	roslaunch terprescue bring_up.launch
-	roslaunch terprescue ar_detector.launch
+	roslaunch terprescue all.launch
 ```
 
 

@@ -9,7 +9,7 @@
   </include>
 
   <arg name="ns"     default="turtlebot"/>
-  <include file="$(find terprescue)/launch/turtlebot3_base.launch">
+  <include file="$(find terprescue)/launch/includes/turtlebot3_base.launch">
     <arg name="model" value="waffle"/>
     <arg name="ns"    value="$(arg ns)"/>
     <arg name="y"     value="-6.0"/>
