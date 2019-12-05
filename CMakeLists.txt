@@ -44,9 +44,9 @@ if(CATKIN_ENABLE_TESTING)
 
     add_rostest_gtest(
     terprescueTest
+    test/terprescueTesting.test
     test/main.cpp
     test/LocalizerTest.cpp
-    test/terprescueTesting.test
 
     src/localizer.cpp
     )

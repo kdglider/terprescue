@@ -38,7 +38,7 @@
 #include <ros/ros.h>
 
 int main(int argc, char **argv) {
-  ros::init(argc, argv, "testing");
+  ros::init(argc, argv, "terprescueTest");
   testing::InitGoogleTest(&argc, argv);
   ros::NodeHandle nh;
   return RUN_ALL_TESTS();
