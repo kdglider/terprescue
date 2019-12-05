@@ -36,6 +36,9 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
 #include <sensor_msgs/Image.h>
+#include <sensor_msgs/LaserScan.h>
+#include <ar_track_alvar_msgs/AlvarMarker.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <vector>
 
 /**

@@ -40,6 +40,9 @@
 #include <sensor_msgs/Image.h>
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <ar_track_alvar_msgs/AlvarMarker.h>
+#include <ar_track_alvar_msgs/AlvarMarkers.h>
+#include <geometry_msgs/PoseStamped.h>
 
 #include <vector>
 #include <string>
@@ -75,24 +78,24 @@ class TerpRescue {
         Localizer tagLocalizer;             // Instatiate a tag localizer
 
 
-        // LIDAR subscriber
-        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered",
-            1, &TerpRescue::lidarCallback, this);
-
-        // Camera subscriber
-        ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw",
-            1, &TerpRescue::cameraCallback, this);
-
-        // Odometry subscriber
-        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw",
-            1, &TerpRescue::odomCallback, this);
-
-        // Raw map subscriber
-        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw",
-            1, &TerpRescue::mapCallback, this);
-
-        // Synthesized map publisher
-        ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
+        // // LIDAR subscriber
+        // ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered",
+        //     1, &TerpRescue::lidarCallback, this);
+        //
+        // // Camera subscriber
+        // ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw",
+        //     1, &TerpRescue::cameraCallback, this);
+        //
+        // // Odometry subscriber
+        // ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw",
+        //     1, &TerpRescue::odomCallback, this);
+        //
+        // // Raw map subscriber
+        // ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw",
+        //     1, &TerpRescue::mapCallback, this);
+        //
+        // // Synthesized map publisher
+        // ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
 
 
         /**
@@ -125,6 +128,9 @@ class TerpRescue {
 
 
     public:
+        // testing callback for AR
+        void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
+
         /**
          * @brief    Constructor of the class which initialize parameters
          */
