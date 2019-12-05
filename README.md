@@ -58,7 +58,7 @@ To be completed later
 
 	cd ../../..
 	catkin_make
- 
+ 	source devel/setup.bash
 ```
 
 ## Run Unit Tests
@@ -66,7 +66,10 @@ To be completed later
 
 
 ## Run Demonstration 
-To be completed later
+```
+	roslaunch terprescue bring_up.launch
+	roslaunch terprescue ar_detector.launch
+```
 
 
 ## Notes and Known Issues

@@ -3562,22 +3562,72 @@
       </link>
       <pose frame=''>-0.736058 -0.267535 0 0 -0 0</pose>
     </model>
-    <model name='QR'>
-      <pose frame=''>3.81851 -6.63666 0.4 0 -0 0</pose>
+    <model name='AR0'>
+      <pose frame=''>1.81851 -6.63666 0.4 0 -0 0</pose>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>
           <geometry>
             <mesh>
-              <uri>model://qr/meshes/number.dae</uri>
+              <uri>model://ar0/meshes/number.dae</uri>
               <scale>1 1 1</scale>
             </mesh>
           </geometry>
           <material>
             <script>
-              <uri>model://qr/materials/scripts</uri>
-              <uri>model://qr/materials/textures</uri>
-              <name>QR</name>
+              <uri>model://ar0/materials/scripts</uri>
+              <uri>model://ar0/materials/textures</uri>
+              <name>AR0</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <enable_wind>0</enable_wind>
+      </link>
+    </model>
+    <model name='AR1'>
+      <pose frame=''>5.81851 -6.63666 0.4 0 -0 0</pose>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://ar1/meshes/number.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://ar1/materials/scripts</uri>
+              <uri>model://ar1/materials/textures</uri>
+              <name>AR1</name>
+            </script>
+          </material>
+        </visual>
+        <self_collide>0</self_collide>
+        <kinematic>0</kinematic>
+        <gravity>1</gravity>
+        <enable_wind>0</enable_wind>
+      </link>
+    </model>
+    <model name='AR2'>
+      <pose frame=''>3.81851 -1.63666 0.4 0 -0 0</pose>
+      <static>1</static>
+      <link name='link'>
+        <visual name='visual'>
+          <geometry>
+            <mesh>
+              <uri>model://ar2/meshes/number.dae</uri>
+              <scale>1 1 1</scale>
+            </mesh>
+          </geometry>
+          <material>
+            <script>
+              <uri>model://ar2/materials/scripts</uri>
+              <uri>model://ar2/materials/textures</uri>
+              <name>AR2</name>
             </script>
           </material>
         </visual>
