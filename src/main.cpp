@@ -1,7 +1,7 @@
 /**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       main.cpp
  * @date       11/23/2019
- * @brief      The project will explore and generate map of one unknown environment and 
+ * @brief      The project will explore and generate map of one unknown environment and
  *             also detect tags and display tags information in rviz
  * @license    This project is released under the BSD-3-Clause License.
  *             Redistribution and use in source and binary forms, with or without
@@ -34,12 +34,13 @@
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "terprescue");
-
+    ros::NodeHandle nh;
     TerpRescue terpRescue;
     ros::Rate loop_rate(10);
-
-    terpRescue.detectTags();
-    terpRescue.visualization();
+    auto sub = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
+                                             &TerpRescue::arPoseCallback, &terpRescue);
+    // terpRescue.detectTags();
+    // terpRescue.visualization();
 
     ros::spin();
 
