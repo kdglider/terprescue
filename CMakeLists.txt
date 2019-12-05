@@ -8,16 +8,23 @@ find_package(
     catkin REQUIRED COMPONENTS
     roscpp
     std_msgs
+    geometry_msgs
+    ar_track_alvar_msgs
+    sensor_msgs
     message_generation
     tf
     cv_bridge
 )
 find_package(OpenCV REQUIRED)
+find_package(Boost REQUIRED)
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
     DEPENDENCIES
     std_msgs
+    geometry_msgs
+    sensor_msgs
+    ar_track_alvar_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -29,6 +36,7 @@ include_directories(
     include
     ${catkin_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
 )
 include_directories(vendor/googletest)
 
