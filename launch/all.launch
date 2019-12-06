@@ -1,4 +1,5 @@
 <launch>
   <include file="$(find terprescue)/launch/includes/bring_up.launch"/>
   <include file="$(find terprescue)/launch/includes/ar_detector.launch"/>
+  <include file="$(find terprescue)/launch/includes/explore.launch"/>
 </launch>
