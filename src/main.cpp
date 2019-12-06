@@ -38,7 +38,9 @@ int main(int argc, char **argv) {
     TerpRescue terpRescue;
     ros::Rate loop_rate(10);
     auto sub = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
-                                             &TerpRescue::arPoseCallback, &terpRescue);
+               &TerpRescue::arPoseCallback, &terpRescue);
+    auto sub_bot = nh.subscribe<gazebo_msgs::ModelStates>("/gazebo/model_states", 50,
+               &TerpRescue::botPoseCallback, &terpRescue);
     // terpRescue.detectTags();
     // terpRescue.visualization();
 
