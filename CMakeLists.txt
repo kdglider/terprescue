@@ -11,6 +11,7 @@ find_package(
     geometry_msgs
     ar_track_alvar_msgs
     sensor_msgs
+    gazebo_msgs
     message_generation
     tf
     cv_bridge
@@ -25,6 +26,7 @@ generate_messages(
     geometry_msgs
     sensor_msgs
     ar_track_alvar_msgs
+    gazebo_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -47,7 +49,6 @@ target_link_libraries(terprescue ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
-    find_package(gtest)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
 
     add_rostest_gtest(
