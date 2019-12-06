@@ -67,9 +67,23 @@ void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
     std::cout<<"AR ID: "<<arId<<std::endl;
     std::cout<<"AR Position: "<<x<<","<<y<<","<<z<<std::endl;
   }
-
 }
 
+void TerpRescue::botPoseCallback(const gazebo_msgs::ModelStates msgs){
+  auto modelNameList = msgs.name;
+  const auto botPoseList= msgs.pose; // geometry_msgs::Pose[] type
+  int modelInd = 0;
+  for(auto modelName:modelNameList){
+    if(modelName == "turtlebot"){
+      std::cout<<"Model name: " << modelName <<std::endl;
+      const geometry_msgs::Point botPoint = botPoseList[modelInd].position;
+      float x = botPoint.x;
+      float y = botPoint.y;
+      float z = botPoint.z;
+      std::cout<<"Model Position: " << x << "," << y << "," << z << std::endl;  
+    }
+  }
+}
 
 TerpRescue::TerpRescue() {
 }
