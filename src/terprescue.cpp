@@ -58,6 +58,7 @@ void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
   markerList = msgs.markers;
+  std::cout<< "\nMarker Size: "<< markerList.size()<< std::endl;
   for(auto msg : markerList){
     auto arId = msg.id;
     const geometry_msgs::PoseStamped arPoseStamped = msg.pose;
@@ -67,7 +68,11 @@ void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
     float y = arPoint.y;
     float z = arPoint.z;
     std::cout<<"AR ID: "<<arId<<std::endl;
-    std::cout<<"AR Position: "<<x<<","<<y<<","<<z<<std::endl;
+    if(std::isnan(x)){
+      std::cout<< "Not A Number!!!!!"<< std::endl;
+    }
+    tagLocalizer.tagRecognition(markerList);
+    std::cout<<"AR Position: "<<x<<", "<<y<<", "<<z<<std::endl;
   }
 }
 
@@ -95,6 +100,10 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
   float x = botPosition.x;
   float y = botPosition.y;
   float z = botPosition.z;
+  float xQuat = botOrientation.z;
+  float yQuat = botOrientation.z;
+  float zQuat = botOrientation.z;
+  float wQuat = botOrientation.z;
   std::cout<<"Turtlebot Position: " << x << "," << y << "," << z << std::endl;
 }
 
