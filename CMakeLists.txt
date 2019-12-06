@@ -12,6 +12,7 @@ find_package(
     ar_track_alvar_msgs
     sensor_msgs
     gazebo_msgs
+    nav_msgs
     message_generation
     tf
     cv_bridge
@@ -27,6 +28,7 @@ generate_messages(
     sensor_msgs
     ar_track_alvar_msgs
     gazebo_msgs
+    nav_msgs
 )
 
 ## System dependencies are found with CMake's conventions

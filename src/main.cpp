@@ -41,6 +41,8 @@ int main(int argc, char **argv) {
                &TerpRescue::arPoseCallback, &terpRescue);
     auto sub_bot = nh.subscribe<gazebo_msgs::ModelStates>("/gazebo/model_states", 50,
                &TerpRescue::botPoseCallback, &terpRescue);
+    auto sub_odom = nh.subscribe<nav_msgs::Odometry>("/turtlebot/odom", 50,
+               &TerpRescue::botOdomCallback, &terpRescue);
     // terpRescue.detectTags();
     // terpRescue.visualization();
 

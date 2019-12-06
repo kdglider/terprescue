@@ -86,6 +86,16 @@ void TerpRescue::botPoseCallback(const gazebo_msgs::ModelStates msgs){
   }
 }
 
+void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
+  botOdom = msgs;
+  auto botPosition = botOdom.pose.pose.position;
+  auto botOrientation = botOdom.pose.pose.orientation;
+  float x = botPosition.x;
+  float y = botPosition.y;
+  float z = botPosition.z;
+  std::cout<<"Turtlebot Position: " << x << "," << y << "," << z << std::endl;
+}
+
 TerpRescue::TerpRescue() {
 }
 

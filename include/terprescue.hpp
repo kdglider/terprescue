@@ -44,6 +44,7 @@
 #include <ar_track_alvar_msgs/AlvarMarker.h>
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <nav_msgs/Odometry.h>
 
 #include <vector>
 #include <string>
@@ -79,6 +80,8 @@ class TerpRescue {
         std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;     // AR markers list data
 
         gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
+
+        nav_msgs::Odometry botOdom;     // Turtlebot Odometry information
 
         Localizer tagLocalizer;             // Instatiate a tag localizer
 
@@ -137,6 +140,7 @@ class TerpRescue {
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
         // testing callback for gazebo
         void botPoseCallback(const gazebo_msgs::ModelStates msgs);
+        void botOdomCallback(const nav_msgs::Odometry msgs);
 
         /**
          * @brief    Constructor of the class which initialize parameters
