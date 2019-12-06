@@ -30,36 +30,35 @@
  *             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <explorer.h>
+#include <explorer.hpp>
 
 Explorer::Explorer() {
-    robotVelocity.linear.x = defaultLinearSpeed;
-	robotVelocity.angular.z = 0;
+    //robotVelocity.linear.x = defaultLinearSpeed;
+	//robotVelocity.angular.z = 0;
 
-    vel_pub.publish(robotVelocity);
+    //vel_pub.publish(robotVelocity);
 }
 
-void Explorer::laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg) {
-    // Number of array elements in laser field of view
-    int laserSize = (msg->angle_max - msg->angle_min)/msg->angle_increment;
-
+bool Explorer::detectObject(std::vector<float> lidarArray) {
     // Check LIDAR array for any readings below safeDistance
-    for (int i = 1 ; i < laserSize ; i++) {
+    for (int i = 1 ; i < lidarSize ; i++) {
         // Reject corrupt readings
-        if (std::isnan(msg->ranges[i]) == false) {
-            if (msg->ranges[i] < safeDistance) {
-                randomTurn();
+        if (std::isnan(lidarArray[i]) == false) {
+            if (lidarArray[i] < safeDistance) {
+                // Return true if any reading registers an object closer than safeDistance
+                return true;
                 break;
             }
         }
     }
 
-    // If no obstacle is closer than safeDistance, continue to move forward
-    vel_pub.publish(robotVelocity);
+    // If no object is closer than safeDistance, return false
+    return false;
 }
 
 
 void Explorer::randomTurn() {
+    /*
     // Create and start a timer
 	std::clock_t start;
 	start = std::clock();
@@ -82,5 +81,6 @@ void Explorer::randomTurn() {
     robotVelocity.linear.x = defaultLinearSpeed;
 	robotVelocity.angular.z = 0;
     vel_pub.publish(robotVelocity);
+    */
 }
 

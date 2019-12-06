@@ -37,8 +37,17 @@
 #include <iostream>
 
 
-void TerpRescue::lidarCallback(const sensor_msgs::LaserScan data) {
+void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
+    // Calculate lidarSize if it has not been set before
+    if (explorer.lidarSize == 0) {
+        int lidarSize = (msg.angle_max - msg.angle_min)/msg.angle_increment;
+    }
+    
+    std::vector<float> lidarArray = msg.ranges;
 
+    if (explorer.detectObject(lidarArray) == true) {
+        explorer.randomTurn();
+    }
 }
 
 

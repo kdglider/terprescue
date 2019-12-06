@@ -51,6 +51,7 @@
 #include <cmath>
 
 #include <localizer.hpp>
+#include <explorer.hpp>
 
 /**
  * @brief The class has functions to subscribe all sensor data and also calculate tag
@@ -62,11 +63,11 @@ class TerpRescue {
 
         // Structure of a tag; contains the ID and pose
         struct tag {
-            std::string ID;                      // Decoded tag ID
+            std::string ID;                 // Decoded tag ID
             geometry_msgs::Pose tagPose;    // Tag pose in the world frame
         };
 
-        std::vector<tag> tagList;       // List of all located tags (packages)
+        std::vector<tag> tagList;           // List of all located tags (packages)
 
         geometry_msgs::Pose robotPose;      // Current robot pose
 
@@ -82,9 +83,11 @@ class TerpRescue {
 
         gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
 
-        nav_msgs::Odometry botOdom;     // Turtlebot Odometry information
+        nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
-        Localizer tagLocalizer;             // Instatiate a tag localizer
+        Localizer tagLocalizer;             // Instantiate a tag localizer object
+
+        Explorer explorer;                  // Instantiate an Explorer object 
 
 
         // // LIDAR subscriber
@@ -112,7 +115,7 @@ class TerpRescue {
          * @param    lidar data: sensor_msgs::LaserScan
          * @return   void
          */
-        void lidarCallback(const sensor_msgs::LaserScan data);
+        void lidarCallback(const sensor_msgs::LaserScan msg);
 
         /**
          * @brief    callback function of camera

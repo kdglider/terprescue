@@ -34,6 +34,7 @@
 #define INCLUDE_EXPLORER_H_
 
 #include <vector>
+#include <cmath>
 
 /** @brief This class contains methods to help the robot navigate and explore the environment */
 class Explorer {
@@ -45,15 +46,17 @@ class Explorer {
         // LIDAR distance within which the robot will execute a random turn
         double safeDistance = 0.5;          // m
 
+        // Number of array elements in LIDAR field of view (default 0 until set in lidarCallback())
+        int lidarSize = 0;
 
         /** @brief Constructor that initializes the first robotVelocity publish */
         Explorer();
 
         /**
-         * @brief LIDAR callback function that determines if the robot is too close to an obstacle
-         * @param msg LaserScan message that contains an array with the depth readings
+         * @brief Checks to see if an object is close to the robot
+         * @param lidarArray Array of LIDAR readings from subscribed message
          */
-        void laserCallback(const sensor_msgs::LaserScan::ConstPtr& msg);
+        bool detectObject(std::vector<float> lidarArray);
 
         /** @brief Executes a turn for a constrained random amount of time */
         void randomTurn();

@@ -46,7 +46,13 @@ include_directories(vendor/googletest)
 
 message("\n\nOPENCV VERSION:\n" ${OpenCV_INCLUDE_DIRS} "\n!!!!\n\n")
 
-add_executable(terprescue src/main.cpp src/localizer.cpp src/terprescue.cpp)
+add_executable(terprescue 
+    src/main.cpp 
+    src/localizer.cpp 
+    src/explorer.cpp
+    src/terprescue.cpp
+)
+
 target_link_libraries(terprescue ${catkin_LIBRARIES} ${OpenCV_LIBRARIES})
 
 if(CATKIN_ENABLE_TESTING)
