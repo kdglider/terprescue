@@ -40,6 +40,7 @@
 #include <sensor_msgs/Image.h>
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <gazebo_msgs/ModelStates.h>
 #include <ar_track_alvar_msgs/AlvarMarker.h>
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
 #include <geometry_msgs/PoseStamped.h>
@@ -130,6 +131,8 @@ class TerpRescue {
     public:
         // testing callback for AR
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
+        // testing callback for gazebo
+        void botPoseCallback(const gazebo_msgs::ModelStates msgs);
 
         /**
          * @brief    Constructor of the class which initialize parameters
