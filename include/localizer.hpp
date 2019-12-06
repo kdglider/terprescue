@@ -40,6 +40,9 @@
 #include <sensor_msgs/LaserScan.h>
 #include <ar_track_alvar_msgs/AlvarMarker.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Transform.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 #include <vector>
 
 /**
@@ -73,9 +76,9 @@ class Localizer {
 
     /**
      * @brief    locate tag regarding to robot frame
-     * @return   void
+     * @return   std::vector<tf2::Transform>
      */
-    void locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
+    std::vector<tf2::Transform> locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
 
 
     /**

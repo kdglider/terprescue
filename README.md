@@ -51,6 +51,8 @@ To be completed later
 ## Build Instructions
 ```
 	sudo apt-get install ros-kinetic-turtlebot3-*
+	sudo apt-get install ros-kinetic-gmapping
+	sudo apt-get install ros-kinetic-ar-track-alvar
 	mkdir -r terp_catkin/src && cd terp_catkin/src
 	git clone https://github.com/kdglider/terprescue.git
 	cd terprescue
@@ -60,7 +62,6 @@ To be completed later
 	catkin_make
  	source devel/setup.bash
 ```
-
 ## Run Unit Tests
 To be completed later
 

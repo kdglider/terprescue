@@ -70,9 +70,30 @@ bool Localizer::tagRecognition(std::vector<ar_track_alvar_msgs::AlvarMarker> mar
  * @brief    locate tag regarding to robot frame
  * @return   void
  */
-void Localizer::locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList){
+std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList){
+  std::vector<tf2::Transform> tagTransformList;
   if(tagRecognition(markerList)){
+    for(auto marker : markerList){
+      const geometry_msgs::PoseStamped arPoseStamped = marker.pose;
+      const geometry_msgs::Pose arPose= arPoseStamped.pose;
+      const geometry_msgs::Point arPoint = arPose.position;
+      const geometry_msgs::Quaternion arOri = arPose.orientation;
+      float x = arPoint.x;
+      float y = arPoint.y;
+      float z = arPoint.z;
+      double xQuat = arOri.x;
+      double yQuat = arOri.y;
+      double zQuat = arOri.z;
+      double wQuat = arOri.w;
+      if(!(std::isnan(x) || std::isnan(y) || std::isnan(z))){
+        tf2::Quaternion tagQuat(xQuat, yQuat, zQuat, wQuat);
+        tf2::Vector3 tagVect(x, y, z);
+        tf2::Transform tagTransform(tagQuat, tagVect);
+        tagTransformList.emplace_back(tagTransform);
+      }
+    }
   }
+  return tagTransformList;
 }
 
 /**

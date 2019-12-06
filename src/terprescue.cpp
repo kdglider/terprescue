@@ -5,7 +5,7 @@
  * @brief      This class defined class of TerpRescue which is the main class of this project
  *             The class has functions to subscribe all sensor data and also calculate tag
  *             location and display map in RViz.
- * 
+ *
  * @license    This project is released under the BSD-3-Clause License.
  *             Redistribution and use in source and binary forms, with or without
  *             modification, are permitted provided that the following conditions are met:
@@ -80,7 +80,9 @@ void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
     if(std::isnan(x)){
       std::cout<< "Not A Number!!!!!"<< std::endl;
     }
-    tagLocalizer.tagRecognition(markerList);
+    // tagLocalizer.tagRecognition(markerList);
+    std::vector<tf2::Transform> tagTransformList = tagLocalizer.locateTag(markerList);
+    std::cout<<"Tag list size: "<< tagTransformList.size() << std::endl;
     std::cout<<"AR Position: "<<x<<", "<<y<<", "<<z<<std::endl;
   }
 }
@@ -109,10 +111,10 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
   float x = botPosition.x;
   float y = botPosition.y;
   float z = botPosition.z;
-  float xQuat = botOrientation.z;
-  float yQuat = botOrientation.z;
+  float xQuat = botOrientation.x;
+  float yQuat = botOrientation.y;
   float zQuat = botOrientation.z;
-  float wQuat = botOrientation.z;
+  float wQuat = botOrientation.w;
   std::cout<<"Turtlebot Position: " << x << "," << y << "," << z << std::endl;
 }
 
