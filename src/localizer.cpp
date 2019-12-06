@@ -39,15 +39,39 @@
  * @brief    recognize if there is a tag in the current image
  * @return   void
  */
-bool Localizer::tagRecognition() {
+bool Localizer::tagRecognition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList) {
+  int markerSize = markerList.size();
+  if(markerSize == 0){
+    ROS_INFO_STREAM("No Tag In Sight.");
+    return false;
+  }
+  else{
+    for(auto marker : markerList){
+      const geometry_msgs::PoseStamped arPoseStamped = marker.pose;
+      const geometry_msgs::Pose arPose= arPoseStamped.pose;
+      const geometry_msgs::Point arPoint = arPose.position;
+      float x = arPoint.x;
+      float y = arPoint.y;
+      float z = arPoint.z;
+      if(std::isnan(x) || std::isnan(y) || std::isnan(z)){
+        markerSize -= 1;
+      }
+  }
+  if(markerSize <= 0){
+    ROS_INFO_STREAM("No Tag In Sight.");
+    return false;
+  }
+  else{
+    return true;
+  }
+  }
 }
-
 /**
  * @brief    locate tag regarding to robot frame
  * @return   void
  */
-void Localizer::locateTag() {
-  if(tagRecognition()){
+void Localizer::locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList){
+  if(tagRecognition(markerList)){
   }
 }
 
