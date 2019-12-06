@@ -55,7 +55,7 @@ void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
 }
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
-  auto markerList = msgs.markers;
+  markerList = msgs.markers;
   for(auto msg : markerList){
     auto arId = msg.id;
     const geometry_msgs::PoseStamped arPoseStamped = msg.pose;
@@ -70,8 +70,9 @@ void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
 }
 
 void TerpRescue::botPoseCallback(const gazebo_msgs::ModelStates msgs){
-  auto modelNameList = msgs.name;
-  const auto botPoseList= msgs.pose; // geometry_msgs::Pose[] type
+  modelStatesList = msgs;
+  auto modelNameList = modelStatesList.name;
+  const auto botPoseList= modelStatesList.pose; // geometry_msgs::Pose[] type
   int modelInd = 0;
   for(auto modelName:modelNameList){
     if(modelName == "turtlebot"){
@@ -80,7 +81,7 @@ void TerpRescue::botPoseCallback(const gazebo_msgs::ModelStates msgs){
       float x = botPoint.x;
       float y = botPoint.y;
       float z = botPoint.z;
-      std::cout<<"Model Position: " << x << "," << y << "," << z << std::endl;  
+      std::cout<<"Model Position: " << x << "," << y << "," << z << std::endl;
     }
   }
 }

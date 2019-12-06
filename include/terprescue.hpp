@@ -76,6 +76,10 @@ class TerpRescue {
 
         sensor_msgs::Image cameraImage;     // Camera image data
 
+        std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;     // AR markers list data
+
+        gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
+
         Localizer tagLocalizer;             // Instatiate a tag localizer
 
 
