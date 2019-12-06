@@ -48,6 +48,7 @@
 
 #include <vector>
 #include <string>
+#include <cmath>
 
 #include <localizer.hpp>
 

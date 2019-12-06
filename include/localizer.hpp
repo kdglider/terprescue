@@ -34,6 +34,7 @@
 #define INCLUDE_LOCALIZER_H_
 
 #include <ros/ros.h>
+#include <ros/console.h>
 #include <geometry_msgs/Pose.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/LaserScan.h>
@@ -58,24 +59,25 @@ class Localizer {
     sensor_msgs::Image camera;
 
     /**
-     * @brief    recognize if there is a tag in the current image
-     * @return   bool
-     */
-    bool tagRecognition();
-
-    /**
-     * @brief    locate tag regarding to robot frame
-     * @return   void
-     */
-    void locateTag();
-
-    /**
      * @brief    tranform tag location from robot frame to map frame
      * @return   void
      */
     void transformationTagPosition();
 
  public:
+    /**
+     * @brief    recognize if there is a tag in the current image
+     * @return   bool
+     */
+    bool tagRecognition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
+
+    /**
+     * @brief    locate tag regarding to robot frame
+     * @return   void
+     */
+    void locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
+
+
     /**
      * @brief    This function detects tags and also save tags information in a vector
      * @param    lidar data: vector<float>
