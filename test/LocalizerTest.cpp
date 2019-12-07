@@ -78,3 +78,10 @@ TEST(Localizer, tagRecognitionNanMarkerTest) {
   bool nanMarker = tagLocalizer.tagRecognition(markerList);
   EXPECT_EQ(nanMarker, false);
 }
+
+TEST(Localizer, locateTagNoMarkerTest) {
+  std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
+  Localizer tagLocalizer;
+  std::vector<tf2::Transform> tagList = tagLocalizer.locateTag(markerList);
+  EXPECT_EQ(tagList.empty(), true);
+}
