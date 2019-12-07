@@ -3,7 +3,7 @@
  * @file       explorer.hpp
  * @date       12/06/2019
  * @brief      This file contains delarations for the Explorer class, which contains methods to help the robot navigate and explore the environment
- * 
+ *
  * @license    This project is released under the BSD-3-Clause License.
  *             Redistribution and use in source and binary forms, with or without
  *             modification, are permitted provided that the following conditions are met:
@@ -83,4 +83,3 @@ void Explorer::randomTurn() {
     vel_pub.publish(robotVelocity);
     */
 }
-
