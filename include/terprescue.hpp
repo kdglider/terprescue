@@ -62,9 +62,9 @@ class TerpRescue {
         ros::NodeHandle nh;
 
         // Structure of a tag; contains the ID and pose
-        struct tag {
+        struct tag{
             std::string ID;                 // Decoded tag ID
-            geometry_msgs::Pose tagPose;    // Tag pose in the world frame
+            geometry_msgs::Point tagPoint;    // Tag pose in the world frame
         };
 
         std::vector<tag> tagList;           // List of all located tags (packages)
@@ -85,9 +85,11 @@ class TerpRescue {
 
         nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
+        std::vector<tf2::Transform> tagWorldTransformList;
+
         Localizer tagLocalizer;             // Instantiate a tag localizer object
 
-        Explorer explorer;                  // Instantiate an Explorer object 
+        Explorer explorer;                  // Instantiate an Explorer object
 
 
         // // LIDAR subscriber
@@ -145,6 +147,8 @@ class TerpRescue {
         // testing callback for gazebo
         void botPoseCallback(const gazebo_msgs::ModelStates msgs);
         void botOdomCallback(const nav_msgs::Odometry msgs);
+
+        double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
 
         /**
          * @brief    Constructor of the class which initialize parameters
