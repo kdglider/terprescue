@@ -68,6 +68,7 @@ if(CATKIN_ENABLE_TESTING)
 
     src/localizer.cpp
     src/terprescue.cpp
+    src/explorer.cpp
     )
 
     target_link_libraries(terprescueTest ${catkin_LIBRARIES} ${OpenCV_LIBS})
