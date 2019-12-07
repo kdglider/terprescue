@@ -66,6 +66,7 @@ bool Localizer::tagRecognition(std::vector<ar_track_alvar_msgs::AlvarMarker> mar
   }
   }
 }
+
 /**
  * @brief    locate tag regarding to robot frame
  * @return   void
@@ -100,8 +101,29 @@ std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs
  * @brief    tranform tag location from robot frame to map frame
  * @return   void
  */
-void Localizer::transformationTagPosition() {
-
+std::vector<tf2::Transform> Localizer::transformationTagPosition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList, const nav_msgs::Odometry odomMsg) {
+  std::vector<tf2::Transform> tagTransformList;
+  std::vector<tf2::Transform> tagWorldTransformList;
+  tagTransformList = locateTag(markerList);
+  if(tagTransformList.size() > 0){
+    auto botPosition = odomMsg.pose.pose.position;
+    auto botOrientation = odomMsg.pose.pose.orientation;
+    float x = botPosition.x;
+    float y = botPosition.y;
+    float z = botPosition.z;
+    double xQuat = botOrientation.x;
+    double yQuat = botOrientation.y;
+    double zQuat = botOrientation.z;
+    double wQuat = botOrientation.w;
+    tf2::Quaternion botQuat(xQuat, yQuat, zQuat, wQuat);
+    tf2::Vector3 botVect(x, y, z);
+    tf2::Transform botTransform(botQuat, botVect);
+    for(auto tagTransform:tagTransformList){
+      tf2::Transform tagWorldTransform = botTransform*tagTransform;
+      tagWorldTransformList.emplace_back(tagWorldTransform);
+    }
+  }
+  return tagWorldTransformList;
 }
 
 /**
