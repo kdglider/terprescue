@@ -124,8 +124,19 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
 }
 
 TerpRescue::TerpRescue() {
+  subAr = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
+             &TerpRescue::arPoseCallback, this);
+  // auto sub_bot = nh.subscribe<gazebo_msgs::ModelStates>("/gazebo/model_states", 50,
+  //            &TerpRescue::botPoseCallback, this);
+  subOdom = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
+             &TerpRescue::botOdomCallback, this);
 }
 
+void TerpRescue::run(){
+  ros::Rate loop_rate(10);
+  ros::spinOnce();
+  loop_rate.sleep();
+}
 
 void TerpRescue::visualization() {
 }

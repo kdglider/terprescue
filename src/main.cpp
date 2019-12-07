@@ -34,17 +34,18 @@
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "terprescue");
-    ros::NodeHandle nh;
+    // ros::NodeHandle nh;
     TerpRescue terpRescue;
-    ros::Rate loop_rate(10);
-    auto sub = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
-               &TerpRescue::arPoseCallback, &terpRescue);
-    // auto sub_bot = nh.subscribe<gazebo_msgs::ModelStates>("/gazebo/model_states", 50,
-    //            &TerpRescue::botPoseCallback, &terpRescue);
-    auto sub_odom = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
-               &TerpRescue::botOdomCallback, &terpRescue);
+    // ros::Rate loop_rate(10);
+    // auto subAr = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
+    //            &TerpRescue::arPoseCallback, &terpRescue);
+    // // auto sub_bot = nh.subscribe<gazebo_msgs::ModelStates>("/gazebo/model_states", 50,
+    // //            &TerpRescue::botPoseCallback, &terpRescue);
+    // auto subOdom = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
+    //            &TerpRescue::botOdomCallback, &terpRescue);
     // terpRescue.detectTags();
     // terpRescue.visualization();
+    terpRescue.run();
 
     ros::spin();
 
