@@ -56,6 +56,7 @@ TEST(TerpRescue, DummyTest) {
 
 TEST(TerpRescue, arPoseCallbackTest) {
   ros::NodeHandle nh;
+  ros::Rate loop_rate(10);
   ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
   ar_track_alvar_msgs::AlvarMarkers markersMsg;
   ar_track_alvar_msgs::AlvarMarker marker;
@@ -69,11 +70,11 @@ TEST(TerpRescue, arPoseCallbackTest) {
   int counter = 0;
   while (ros::ok()) {
     testPub.publish(markersMsg);
-    terpRescue.run();
     if (counter == 2) {
       break;
     }
     ros::spinOnce();
+    loop_rate.sleep();
     counter++;
   }
   std::vector<ar_track_alvar_msgs::AlvarMarker> markerListTest = terpRescue.getMarkerList();
@@ -82,6 +83,7 @@ TEST(TerpRescue, arPoseCallbackTest) {
 
 TEST(TerpRescue, botOdomCallbackTest) {
   ros::NodeHandle nh;
+  ros::Rate loop_rate(10);
   ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
   ros::Publisher testOdomPub = nh.advertise<nav_msgs::Odometry>("/odom", 50);
   ar_track_alvar_msgs::AlvarMarkers markersMsg;
@@ -101,11 +103,11 @@ TEST(TerpRescue, botOdomCallbackTest) {
   while (ros::ok()) {
     testPub.publish(markersMsg);
     testOdomPub.publish(OdomMsgs);
-    terpRescue.run();
     if (counter == 2) {
       break;
     }
     ros::spinOnce();
+    loop_rate.sleep();
     counter++;
   }
   auto tagList = terpRescue.getTagWorldTransformList();
@@ -128,6 +130,7 @@ TEST(TerpRescue, getPointDistanceTest) {
 
 TEST(TerpRescue, detectTagsTest) {
   ros::NodeHandle nh;
+  ros::Rate loop_rate(10);
   ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
   ros::Publisher testOdomPub = nh.advertise<nav_msgs::Odometry>("/odom", 50);
   ar_track_alvar_msgs::AlvarMarkers markersMsg;
@@ -147,15 +150,15 @@ TEST(TerpRescue, detectTagsTest) {
   while (ros::ok()) {
     testPub.publish(markersMsg);
     testOdomPub.publish(OdomMsgs);
-    terpRescue.run();
     if (counter == 2) {
       break;
     }
     ros::spinOnce();
+    loop_rate.sleep();
     counter++;
   }
   auto tagList = terpRescue.getTagList();
-  EXPECT_EQ(tagList.size(), 2);
+  EXPECT_EQ(tagList.size(), 1);
 }
 
 
@@ -163,13 +166,12 @@ TEST(TerpRescue, detectTagsTest) {
 // TEST(TerpRescue, sensorCallBackTest) {
 //   ros::NodeHandle nh;
 
-  
+
 //   TerpRescue terpRescue;
 //   int counter = 0;
 //   while (ros::ok()) {
 //     testPub.publish(markersMsg);
 //     testOdomPub.publish(OdomMsgs);
-//     terpRescue.run();
 //     if (counter == 2) {
 //       break;
 //     }

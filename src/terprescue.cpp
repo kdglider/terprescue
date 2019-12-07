@@ -44,7 +44,7 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
         explorer.lidarSize = lidarSize;
         ROS_INFO_STREAM("LIDAR Size: " << lidarSize);
     }
-    
+
     std::vector<float> lidarArray = msg.ranges;
 
     if (explorer.detectObject(lidarArray) == true) {
@@ -113,11 +113,6 @@ void TerpRescue::randomTurn() {
     robotVelocity.linear.x = defaultLinearSpeed;
 	robotVelocity.angular.z = 0;
     vel_pub.publish(robotVelocity);
-}
-
-void TerpRescue::run(){
-  // ros::spinOnce();
-  // loop_rate.sleep();
 }
 
 void TerpRescue::visualization() {
