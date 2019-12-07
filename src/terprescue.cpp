@@ -37,54 +37,25 @@
 #include <iostream>
 
 
-// void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
-//     // Calculate lidarSize if it has not been set before
-//     if (explorer.lidarSize == 0) {
-//         int lidarSize = (msg.angle_max - msg.angle_min)/msg.angle_increment;
-//     }
-//
-//     std::vector<float> lidarArray = msg.ranges;
-//
-//     if (explorer.detectObject(lidarArray) == true) {
-//         explorer.randomTurn();
-//     }
-// }
+void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
+    // Calculate lidarSize if it has not been set before
+    // if (explorer.lidarSize == 0) {
+    //     int lidarSize = (msg.angle_max - msg.angle_min)/msg.angle_increment;
+    // }
 
+    // std::vector<float> lidarArray = msg.ranges;
 
-void TerpRescue::cameraCallback(const sensor_msgs::Image data) {
-
+    // if (explorer.detectObject(lidarArray) == true) {
+    //     explorer.randomTurn();
+    // }
 }
-
-
-void TerpRescue::odomCallback(const nav_msgs::Odometry data) {
-
-}
-
 
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
-
+  rawMap = data;
 }
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
   markerList = msgs.markers;
-  // std::cout<< "\nMarker Size: "<< markerList.size()<< std::endl;
-  // for(auto msg : markerList){
-  //   auto arId = msg.id;
-  //   const geometry_msgs::PoseStamped arPoseStamped = msg.pose;
-  //   const geometry_msgs::Pose arPose= arPoseStamped.pose;
-  //   const geometry_msgs::Point arPoint = arPose.position;
-  //   float x = arPoint.x;
-  //   float y = arPoint.y;
-  //   float z = arPoint.z;
-  //   std::cout<<"AR ID: "<<arId<<std::endl;
-  //   if(std::isnan(x)){
-  //     std::cout<< "NaN AR Position"<< std::endl;
-  //   }
-  //   // tagLocalizer.tagRecognition(markerList);
-  //   std::vector<tf2::Transform> tagTransformList = tagLocalizer.locateTag(markerList);
-  //   std::cout<<"Tag list size: "<< tagTransformList.size() << std::endl;
-  //   std::cout<<"AR Position: "<<x<<", "<<y<<", "<<z<<std::endl;
-  // }
 }
 
 void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
@@ -107,10 +78,6 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
 }
 
 TerpRescue::TerpRescue() {
-  subAr = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
-             &TerpRescue::arPoseCallback, this);
-  subOdom = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
-             &TerpRescue::botOdomCallback, this);
 }
 
 void TerpRescue::run(){
@@ -120,6 +87,7 @@ void TerpRescue::run(){
 }
 
 void TerpRescue::visualization() {
+
 }
 
 double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB){

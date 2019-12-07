@@ -157,3 +157,25 @@ TEST(TerpRescue, detectTagsTest) {
   auto tagList = terpRescue.getTagList();
   EXPECT_EQ(tagList.size(), 2);
 }
+
+
+
+// TEST(TerpRescue, sensorCallBackTest) {
+//   ros::NodeHandle nh;
+
+  
+//   TerpRescue terpRescue;
+//   int counter = 0;
+//   while (ros::ok()) {
+//     testPub.publish(markersMsg);
+//     testOdomPub.publish(OdomMsgs);
+//     terpRescue.run();
+//     if (counter == 2) {
+//       break;
+//     }
+//     ros::spinOnce();
+//     counter++;
+//   }
+//   auto tagList = terpRescue.getTagList();
+//   EXPECT_EQ(tagList.size(), 2);
+// }
