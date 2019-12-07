@@ -97,3 +97,27 @@ TEST(Localizer, locateTagOneMarkerTest) {
   std::vector<tf2::Transform> tagList = tagLocalizer.locateTag(markerList);
   EXPECT_EQ(tagList.size(), 1);
 }
+
+TEST(Localizer, transformationTagPositionNoMarkerTest) {
+  std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
+  nav_msgs::Odometry odomMsg;
+  Localizer tagLocalizer;
+  std::vector<tf2::Transform> tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, odomMsg);
+  EXPECT_EQ(tagWorldTransformList.empty(), true);
+}
+
+TEST(Localizer, transformationTagPositionOneMarkerTest) {
+  std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
+  nav_msgs::Odometry odomMsg;
+  Localizer tagLocalizer;
+  ar_track_alvar_msgs::AlvarMarker marker;
+  marker.pose.pose.position.x = 1;
+  marker.pose.pose.position.y = 1;
+  marker.pose.pose.position.z = 1;
+  odomMsg.pose.pose.position.x = 1;
+  odomMsg.pose.pose.position.y = 1;
+  odomMsg.pose.pose.position.z = 1;
+  markerList.emplace_back(marker);
+  std::vector<tf2::Transform> tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, odomMsg);
+  EXPECT_EQ(tagWorldTransformList.size(), 1);
+}
