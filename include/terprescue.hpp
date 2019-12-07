@@ -64,9 +64,9 @@ class TerpRescue {
         ros::NodeHandle nh;
 
         // Structure of a tag; contains the ID and pose
-        struct tag {
+        struct tag{
             std::string ID;                 // Decoded tag ID
-            geometry_msgs::Pose tagPose;    // Tag pose in the world frame
+            geometry_msgs::Point tagPoint;    // Tag pose in the world frame
         };
 
         std::vector<tag> tagList;           // List of all located tags (packages)
@@ -79,11 +79,11 @@ class TerpRescue {
 
         std::vector<float> lidar;           // LIDAR data
 
-        sensor_msgs::Image cameraImage;     // Camera image data
+        // sensor_msgs::Image cameraImage;     // Camera image data
 
         std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;     // AR markers list data
 
-        gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
+        // gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
 
         nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
@@ -99,23 +99,24 @@ class TerpRescue {
         geometry_msgs::Twist robotVelocity;
 
         // LIDAR subscriber
-        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("scan",
+        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan",
              1, &TerpRescue::lidarCallback, this);
-        //
-        // // Camera subscriber
-        // ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw",
-        //     1, &TerpRescue::cameraCallback, this);
-        //
-        // // Odometry subscriber
-        // ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/camera/depth/image_raw",
-        //     1, &TerpRescue::odomCallback, this);
-        //
-        // // Raw map subscriber
-        // ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/camera/depth/image_raw",
-        //     1, &TerpRescue::mapCallback, this);
-        //
-        // // Synthesized map publisher
-        // ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
+        std::vector<tf2::Transform> tagWorldTransformList;
+        
+        // AR tag subscriber
+        ros::Subscriber arSubscriber = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
+             &TerpRescue::arPoseCallback, this);
+
+        // Odometry subscriber
+        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
+             &TerpRescue::botOdomCallback, this);
+        
+        // Raw map subscriber
+        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/map",
+            1, &TerpRescue::mapCallback, this);
+        
+        // Synthesized map publisher
+        ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
 
         // Publisher for mobile base velocity
         ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1, this);
@@ -133,14 +134,7 @@ class TerpRescue {
          * @param    lidar data: sensor_msgs::Image
          * @return   void
          */
-        void cameraCallback(const sensor_msgs::Image data);
-
-        /**
-         * @brief    callback function of odom
-         * @param    lidar data: nav_msgs::Odometry
-         * @return   void
-         */
-        void odomCallback(const nav_msgs::Odometry data);
+        // void cameraCallback(const sensor_msgs::Image data);
 
         /**
          * @brief    callback function of map
@@ -149,13 +143,24 @@ class TerpRescue {
          */
         void mapCallback(const nav_msgs::OccupancyGrid data);
 
+        /**
+         * @brief    callback function of odom
+         * @param    lidar data: nav_msgs::Odometry
+         * @return   void
+         */
+        void botOdomCallback(const nav_msgs::Odometry msgs);
+
+        /**
+         * @brief    callback function of AR
+         * @param    AR data: ar_track_alvar_msgs::AlvarMarkers
+         * @return   void
+         */
+        void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
 
     public:
-        // testing callback for AR
-        void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
-        // testing callback for gazebo
-        void botPoseCallback(const gazebo_msgs::ModelStates msgs);
-        void botOdomCallback(const nav_msgs::Odometry msgs);
+        void run();
+
+        double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
 
         /**
          * @brief    Constructor of the class which initialize parameters
@@ -187,7 +192,7 @@ class TerpRescue {
          * @brief    Return current image data
          * @return   cameraImage
          */
-        sensor_msgs::Image getCameraImage();
+        // sensor_msgs::Image getCameraImage();
 
         /**
          * @brief    Return current map data from gmapping
@@ -212,6 +217,10 @@ class TerpRescue {
          * @return   tagList
          */
         std::vector<tag> getTagList();
+
+        std::vector<ar_track_alvar_msgs::AlvarMarker> getMarkerList();
+        
+        std::vector<tf2::Transform> getTagWorldTransformList();
 };
 
 

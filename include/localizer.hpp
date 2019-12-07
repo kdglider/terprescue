@@ -43,6 +43,7 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2/LinearMath/Transform.h>
 #include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <nav_msgs/Odometry.h>
 #include <vector>
 
 /**
@@ -54,18 +55,12 @@ class Localizer {
     // tagInfo is the information of each tag, which include tag id and position
     struct tagInfo {
         int ID;
-        geometry_msgs::Pose position;
+        geometry_msgs::Point position;
     };
 
     std::vector<tagInfo> tags;  // vector of all tags information
     std::vector<float> lidar;
     sensor_msgs::Image camera;
-
-    /**
-     * @brief    tranform tag location from robot frame to map frame
-     * @return   void
-     */
-    void transformationTagPosition();
 
  public:
     /**
@@ -80,6 +75,11 @@ class Localizer {
      */
     std::vector<tf2::Transform> locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
 
+    /**
+     * @brief    tranform tag location from robot frame to map frame
+     * @return   void
+     */
+    std::vector<tf2::Transform> transformationTagPosition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList, const nav_msgs::Odometry odomMsg);
 
     /**
      * @brief    This function detects tags and also save tags information in a vector

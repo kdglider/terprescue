@@ -53,58 +53,13 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     }
 }
 
-
-void TerpRescue::cameraCallback(const sensor_msgs::Image data) {
-
-}
-
-
-void TerpRescue::odomCallback(const nav_msgs::Odometry data) {
-
-}
-
-
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
-
+  rawMap = data;
+  // std::cout << rawMap.info<< std::endl;
 }
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
   markerList = msgs.markers;
-  std::cout<< "\nMarker Size: "<< markerList.size()<< std::endl;
-  for(auto msg : markerList){
-    auto arId = msg.id;
-    const geometry_msgs::PoseStamped arPoseStamped = msg.pose;
-    const geometry_msgs::Pose arPose= arPoseStamped.pose;
-    const geometry_msgs::Point arPoint = arPose.position;
-    float x = arPoint.x;
-    float y = arPoint.y;
-    float z = arPoint.z;
-    std::cout<<"AR ID: "<<arId<<std::endl;
-    if(std::isnan(x)){
-      std::cout<< "Not A Number!!!!!"<< std::endl;
-    }
-    // tagLocalizer.tagRecognition(markerList);
-    std::vector<tf2::Transform> tagTransformList = tagLocalizer.locateTag(markerList);
-    std::cout<<"Tag list size: "<< tagTransformList.size() << std::endl;
-    std::cout<<"AR Position: "<<x<<", "<<y<<", "<<z<<std::endl;
-  }
-}
-
-void TerpRescue::botPoseCallback(const gazebo_msgs::ModelStates msgs){
-  modelStatesList = msgs;
-  auto modelNameList = modelStatesList.name;
-  const auto botPoseList= modelStatesList.pose; // geometry_msgs::Pose[] type
-  int modelInd = 0;
-  for(auto modelName:modelNameList){
-    if(modelName == "turtlebot"){
-      std::cout<<"Model name: " << modelName <<std::endl;
-      const geometry_msgs::Point botPoint = botPoseList[modelInd].position;
-      float x = botPoint.x;
-      float y = botPoint.y;
-      float z = botPoint.z;
-      std::cout<<"Model Position: " << x << "," << y << "," << z << std::endl;
-    }
-  }
 }
 
 void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
@@ -118,10 +73,17 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
   float yQuat = botOrientation.y;
   float zQuat = botOrientation.z;
   float wQuat = botOrientation.w;
-  std::cout<<"Turtlebot Position: " << x << "," << y << "," << z << std::endl;
+  tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, msgs);
+  // std::cout<< "\ntag World tf List size: "<<tagWorldTransformList.size() <<std::endl;
+  // std::cout<<"\nTurtlebot Position: " << x << ", " << y << ", " << z << std::endl;
+  if(tagWorldTransformList.size() > 0){
+    detectTags();
+  }
 }
 
 TerpRescue::TerpRescue() {
+    ros::Rate loop_rate(10);
+
     robotVelocity.linear.x = defaultLinearSpeed;
 	robotVelocity.angular.z = 0;
 
@@ -153,23 +115,62 @@ void TerpRescue::randomTurn() {
     vel_pub.publish(robotVelocity);
 }
 
+void TerpRescue::run(){
+  // ros::spinOnce();
+  // loop_rate.sleep();
+}
+
 void TerpRescue::visualization() {
 }
 
-
-void TerpRescue::detectTags() {
-
+double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB){
+  double distanceSquare = pow(pointA.x-pointB.x, 2) + pow(pointA.y-pointB.y, 2)
+                    + pow(pointA.z-pointB.z, 2);
+  double distance = sqrt(distanceSquare);
+  return distance;
 }
 
+void TerpRescue::detectTags() {
+  for(auto tagWorldTransform:tagWorldTransformList){
+    tf2::Vector3 tagWorldTranslation = tagWorldTransform.getOrigin();
+    tag tagInWorld;
+    tagInWorld.ID = "tag in world frame";
+    geometry_msgs::Point tagPoint;
+    tagPoint.x = tagWorldTranslation.getX();
+    tagPoint.y = tagWorldTranslation.getY();
+    tagPoint.z = tagWorldTranslation.getZ();
+    tagInWorld.tagPoint = tagPoint;
+    // std::cout<<"Tag World Position: " << tagPoint.x <<", "<<tagPoint.y<<", "<<tagPoint.z;
+    double minDistance = 20;
+    for(auto tagItem:tagList){
+      double distance = getPointDistance(tagPoint, tagItem.tagPoint);
+      if(minDistance > distance){
+        minDistance = distance;
+      }
+    }
+    // std::cout<<"\nMin Distance: "<<minDistance<<std::endl;
+    if(minDistance > 0.1){
+      tagList.emplace_back(tagInWorld);
+    }
+  }
+}
+
+std::vector<ar_track_alvar_msgs::AlvarMarker> TerpRescue::getMarkerList(){
+  return markerList;
+}
+
+std::vector<tf2::Transform> TerpRescue::getTagWorldTransformList(){
+  return tagWorldTransformList;
+}
 
 std::vector<float> TerpRescue::getLidar() {
     return lidar;
 }
 
 
-sensor_msgs::Image TerpRescue::getCameraImage() {
-    return cameraImage;
-}
+// sensor_msgs::Image TerpRescue::getCameraImage() {
+//     return cameraImage;
+// }
 
 
 nav_msgs::OccupancyGrid TerpRescue::getRawMap() {
