@@ -84,7 +84,7 @@ class TerpRescue {
 
         std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;     // AR markers list data
 
-        gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
+        // gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
 
         nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
@@ -92,7 +92,7 @@ class TerpRescue {
 
         Localizer tagLocalizer;             // Instantiate a tag localizer object
 
-        Explorer explorer;                  // Instantiate an Explorer object
+        // Explorer explorer;                  // Instantiate an Explorer object
 
 
         // // LIDAR subscriber
@@ -148,7 +148,7 @@ class TerpRescue {
         // testing callback for AR
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
         // testing callback for gazebo
-        void botPoseCallback(const gazebo_msgs::ModelStates msgs);
+        // void botPoseCallback(const gazebo_msgs::ModelStates msgs);
         void botOdomCallback(const nav_msgs::Odometry msgs);
 
         void run();
@@ -207,6 +207,10 @@ class TerpRescue {
          * @return   tagList
          */
         std::vector<tag> getTagList();
+
+        std::vector<ar_track_alvar_msgs::AlvarMarker> getMarkerList();
+        
+        std::vector<tf2::Transform> getTagWorldTransformList();
 };
 
 
