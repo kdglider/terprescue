@@ -33,10 +33,6 @@
 #include <explorer.hpp>
 
 Explorer::Explorer() {
-    //robotVelocity.linear.x = defaultLinearSpeed;
-	//robotVelocity.angular.z = 0;
-
-    //vel_pub.publish(robotVelocity);
 }
 
 bool Explorer::detectObject(std::vector<float> lidarArray) {
@@ -47,7 +43,6 @@ bool Explorer::detectObject(std::vector<float> lidarArray) {
             if (lidarArray[i] < safeDistance) {
                 // Return true if any reading registers an object closer than safeDistance
                 return true;
-                break;
             }
         }
     }
@@ -56,31 +51,4 @@ bool Explorer::detectObject(std::vector<float> lidarArray) {
     return false;
 }
 
-
-void Explorer::randomTurn() {
-    /*
-    // Create and start a timer
-	std::clock_t start;
-	start = std::clock();
-    double secondsElapsed = 0;
-
-    // Random time (between 1-3 seconds) to turn for
-    double randomSeconds = rand() % 3 + 1;
-
-    // Change velcity profile to turning
-    robotVelocity.linear.x = 0;
-	robotVelocity.angular.z = defaultAngularSpeed;
-
-    // Keep turning until the random time is reached
-	while (secondsElapsed <= randomSeconds) {
-		vel_pub.publish(robotVelocity);
-		secondsElapsed = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-	}
-
-    // Change velocity profile back to moving forward
-    robotVelocity.linear.x = defaultLinearSpeed;
-	robotVelocity.angular.z = 0;
-    vel_pub.publish(robotVelocity);
-    */
-}
 

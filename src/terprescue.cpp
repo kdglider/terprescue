@@ -41,12 +41,15 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     // Calculate lidarSize if it has not been set before
     if (explorer.lidarSize == 0) {
         int lidarSize = (msg.angle_max - msg.angle_min)/msg.angle_increment;
+        explorer.lidarSize = lidarSize;
+        ROS_INFO_STREAM("LIDAR Size: " << lidarSize);
     }
     
     std::vector<float> lidarArray = msg.ranges;
 
     if (explorer.detectObject(lidarArray) == true) {
-        explorer.randomTurn();
+        ROS_INFO_STREAM("Object detected");
+        randomTurn();
     }
 }
 
@@ -119,8 +122,36 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
 }
 
 TerpRescue::TerpRescue() {
+    robotVelocity.linear.x = defaultLinearSpeed;
+	robotVelocity.angular.z = 0;
+
+    vel_pub.publish(robotVelocity);
 }
 
+void TerpRescue::randomTurn() {
+    // Create and start a timer
+	std::clock_t start;
+	start = std::clock();
+    double secondsElapsed = 0;
+
+    // Random time (between 1-5 seconds) to turn for
+    double randomSeconds = rand() % 5 + 1;
+
+    // Change velcity profile to turning
+    robotVelocity.linear.x = 0;
+	robotVelocity.angular.z = defaultAngularSpeed;
+
+    // Keep turning until the random time is reached
+	while (secondsElapsed <= randomSeconds) {
+		vel_pub.publish(robotVelocity);
+		secondsElapsed = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+	}
+
+    // Change velocity profile back to moving forward
+    robotVelocity.linear.x = defaultLinearSpeed;
+	robotVelocity.angular.z = 0;
+    vel_pub.publish(robotVelocity);
+}
 
 void TerpRescue::visualization() {
 }

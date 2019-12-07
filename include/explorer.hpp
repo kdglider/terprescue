@@ -33,18 +33,15 @@
 #ifndef INCLUDE_EXPLORER_H_
 #define INCLUDE_EXPLORER_H_
 
+#include <iostream>
 #include <vector>
 #include <cmath>
 
 /** @brief This class contains methods to help the robot navigate and explore the environment */
 class Explorer {
     public:
-        // Default linear and turn speeds
-        double defaultLinearSpeed = 0.3;    // m/s
-	    double defaultAngularSpeed = 0.8;   // rad/s
-
         // LIDAR distance within which the robot will execute a random turn
-        double safeDistance = 0.5;          // m
+        double safeDistance = 0.6;          // m
 
         // Number of array elements in LIDAR field of view (default 0 until set in lidarCallback())
         int lidarSize = 0;
@@ -57,9 +54,6 @@ class Explorer {
          * @param lidarArray Array of LIDAR readings from subscribed message
          */
         bool detectObject(std::vector<float> lidarArray);
-
-        /** @brief Executes a turn for a constrained random amount of time */
-        void randomTurn();
 };
 
 

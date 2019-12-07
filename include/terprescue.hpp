@@ -37,6 +37,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Twist.h>
 #include <sensor_msgs/Image.h>
 #include <nav_msgs/Odometry.h>
 #include <nav_msgs/OccupancyGrid.h>
@@ -49,6 +50,7 @@
 #include <vector>
 #include <string>
 #include <cmath>
+#include <ctime>
 
 #include <localizer.hpp>
 #include <explorer.hpp>
@@ -85,14 +87,20 @@ class TerpRescue {
 
         nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
+        // Default linear and turn speeds
+        double defaultLinearSpeed = 0.2;    // m/s
+	    double defaultAngularSpeed = 0.4;   // rad/s
+
         Localizer tagLocalizer;             // Instantiate a tag localizer object
 
         Explorer explorer;                  // Instantiate an Explorer object 
 
+        // Robot velocity message to be published
+        geometry_msgs::Twist robotVelocity;
 
-        // // LIDAR subscriber
-        // ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan_filtered",
-        //     1, &TerpRescue::lidarCallback, this);
+        // LIDAR subscriber
+        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("scan",
+             1, &TerpRescue::lidarCallback, this);
         //
         // // Camera subscriber
         // ros::Subscriber cameraSubscriber = nh.subscribe<sensor_msgs::Image>("/camera/depth/image_raw",
@@ -108,6 +116,9 @@ class TerpRescue {
         //
         // // Synthesized map publisher
         // ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
+
+        // Publisher for mobile base velocity
+        ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1, this);
 
 
         /**
@@ -150,6 +161,9 @@ class TerpRescue {
          * @brief    Constructor of the class which initialize parameters
          */
         TerpRescue();
+
+        /** @brief Executes a turn for a constrained random amount of time */
+        void randomTurn();
 
         /**
          * @brief    display synthesized map in rviz
