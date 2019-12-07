@@ -34,6 +34,7 @@
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "terprescue");
+
     TerpRescue terpRescue;
     terpRescue.run();
 

@@ -52,6 +52,7 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
 
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
   rawMap = data;
+  // std::cout << rawMap.info<< std::endl;
 }
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
@@ -70,24 +71,23 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
   float zQuat = botOrientation.z;
   float wQuat = botOrientation.w;
   tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, msgs);
-  std::cout<< "\ntag World tf List size: "<<tagWorldTransformList.size() <<std::endl;
-  std::cout<<"\nTurtlebot Position: " << x << ", " << y << ", " << z << std::endl;
+  // std::cout<< "\ntag World tf List size: "<<tagWorldTransformList.size() <<std::endl;
+  // std::cout<<"\nTurtlebot Position: " << x << ", " << y << ", " << z << std::endl;
   if(tagWorldTransformList.size() > 0){
     detectTags();
   }
 }
 
 TerpRescue::TerpRescue() {
+  ros::Rate loop_rate(10);
 }
 
 void TerpRescue::run(){
-  ros::Rate loop_rate(10);
-  ros::spinOnce();
-  loop_rate.sleep();
+  // ros::spinOnce();
+  // loop_rate.sleep();
 }
 
 void TerpRescue::visualization() {
-
 }
 
 double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB){
@@ -107,7 +107,7 @@ void TerpRescue::detectTags() {
     tagPoint.y = tagWorldTranslation.getY();
     tagPoint.z = tagWorldTranslation.getZ();
     tagInWorld.tagPoint = tagPoint;
-    std::cout<<"Tag World Position: " << tagPoint.x <<", "<<tagPoint.y<<", "<<tagPoint.z;
+    // std::cout<<"Tag World Position: " << tagPoint.x <<", "<<tagPoint.y<<", "<<tagPoint.z;
     double minDistance = 20;
     for(auto tagItem:tagList){
       double distance = getPointDistance(tagPoint, tagItem.tagPoint);
@@ -115,7 +115,7 @@ void TerpRescue::detectTags() {
         minDistance = distance;
       }
     }
-    std::cout<<"\nMin Distance: "<<minDistance<<std::endl;
+    // std::cout<<"\nMin Distance: "<<minDistance<<std::endl;
     if(minDistance > 0.1){
       tagList.emplace_back(tagInWorld);
     }
@@ -135,9 +135,9 @@ std::vector<float> TerpRescue::getLidar() {
 }
 
 
-sensor_msgs::Image TerpRescue::getCameraImage() {
-    return cameraImage;
-}
+// sensor_msgs::Image TerpRescue::getCameraImage() {
+//     return cameraImage;
+// }
 
 
 nav_msgs::OccupancyGrid TerpRescue::getRawMap() {

@@ -77,7 +77,7 @@ class TerpRescue {
 
         std::vector<float> lidar;           // LIDAR data
 
-        sensor_msgs::Image cameraImage;     // Camera image data
+        // sensor_msgs::Image cameraImage;     // Camera image data
 
         std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;     // AR markers list data
 
@@ -97,11 +97,11 @@ class TerpRescue {
             1, &TerpRescue::lidarCallback, this);
         
         // AR tag subscriber
-        ros::Subscriber subAr = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
+        ros::Subscriber arSubscriber = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
              &TerpRescue::arPoseCallback, this);
 
         // Odometry subscriber
-        ros::Subscriber subOdom = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
+        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
              &TerpRescue::botOdomCallback, this);
         
         // Raw map subscriber
@@ -124,14 +124,7 @@ class TerpRescue {
          * @param    lidar data: sensor_msgs::Image
          * @return   void
          */
-        void cameraCallback(const sensor_msgs::Image data);
-
-        /**
-         * @brief    callback function of odom
-         * @param    lidar data: nav_msgs::Odometry
-         * @return   void
-         */
-        void odomCallback(const nav_msgs::Odometry data);
+        // void cameraCallback(const sensor_msgs::Image data);
 
         /**
          * @brief    callback function of map
@@ -140,14 +133,21 @@ class TerpRescue {
          */
         void mapCallback(const nav_msgs::OccupancyGrid data);
 
-
-    public:
-        // testing callback for AR
-        void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
-        // testing callback for gazebo
-        // void botPoseCallback(const gazebo_msgs::ModelStates msgs);
+        /**
+         * @brief    callback function of odom
+         * @param    lidar data: nav_msgs::Odometry
+         * @return   void
+         */
         void botOdomCallback(const nav_msgs::Odometry msgs);
 
+        /**
+         * @brief    callback function of AR
+         * @param    AR data: ar_track_alvar_msgs::AlvarMarkers
+         * @return   void
+         */
+        void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
+
+    public:
         void run();
 
         double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
@@ -179,7 +179,7 @@ class TerpRescue {
          * @brief    Return current image data
          * @return   cameraImage
          */
-        sensor_msgs::Image getCameraImage();
+        // sensor_msgs::Image getCameraImage();
 
         /**
          * @brief    Return current map data from gmapping
