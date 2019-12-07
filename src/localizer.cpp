@@ -126,23 +126,4 @@ std::vector<tf2::Transform> Localizer::transformationTagPosition(std::vector<ar_
   return tagWorldTransformList;
 }
 
-/**
- * @brief    This function detects tags and also save tags information in a vector
- * @param    lidar data: vector<float>
- * @param    image data: sensor_msgs::Image
- * @param    robot's currentLocation: geometry_msgs::Pose
- * @return   void
- */
-void Localizer::tagDetection(sensor_msgs::Image image, std::vector<float> lidar, geometry_msgs::Pose currentLocation) {
 
-}
-
-/**
- * @brief    return current detected tags' information
- * @return   a vector of tags' information
- */
-std::vector<Localizer::tagInfo> Localizer::getTagInfo() {
-    tagInfo tag;
-    tags.push_back(tag);
-    return tags;
-}
