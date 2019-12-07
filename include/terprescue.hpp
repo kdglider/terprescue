@@ -61,6 +61,9 @@ class TerpRescue {
     private:
         ros::NodeHandle nh;
 
+        ros::Subscriber subAr;
+        ros::Subscriber subOdom;
+
         // Structure of a tag; contains the ID and pose
         struct tag{
             std::string ID;                 // Decoded tag ID
@@ -147,6 +150,8 @@ class TerpRescue {
         // testing callback for gazebo
         void botPoseCallback(const gazebo_msgs::ModelStates msgs);
         void botOdomCallback(const nav_msgs::Odometry msgs);
+
+        void run();
 
         double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
 
