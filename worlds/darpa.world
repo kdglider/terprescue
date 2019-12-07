@@ -418,7 +418,7 @@
         <gravity>1</gravity>
         <enable_wind>0</enable_wind>
       </link>
-      <pose frame=''>-0.63374 -5.682 0 0 -0 0</pose>
+      <pose frame=''>3 -4 0 0 -0 0</pose>
     </model>
     <model name='jersey_barrier'>
       <static>1</static>
@@ -830,7 +830,7 @@
         <gravity>1</gravity>
         <enable_wind>0</enable_wind>
       </link>
-      <pose frame=''>0.5 -2.29737 0 0 -0 0</pose>
+      <pose frame=''>0.5 -2.29737 -2 0 -0 0</pose>
     </model>
     <model name='Lamp Post_0'>
       <static>1</static>

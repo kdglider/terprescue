@@ -39,6 +39,8 @@ Explorer::Explorer() {
     //vel_pub.publish(robotVelocity);
 }
 
+// TODO Use C++ 11 style
+// for const float* i = lidarArray.begin();i != .end(); ++i 
 bool Explorer::detectObject(std::vector<float> lidarArray) {
     // Check LIDAR array for any readings below safeDistance
     for (int i = 1 ; i < lidarSize ; i++) {
