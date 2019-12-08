@@ -32,8 +32,8 @@
  *             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_TERPRESCUE_H_
-#define INCLUDE_TERPRESCUE_H_
+#ifndef INCLUDE_TERPRESCUE_HPP_
+#define INCLUDE_TERPRESCUE_HPP_
 
 #include <ros/ros.h>
 #include <sensor_msgs/LaserScan.h>
@@ -46,7 +46,6 @@
 #include <ar_track_alvar_msgs/AlvarMarker.h>
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
 #include <geometry_msgs/PoseStamped.h>
-#include <nav_msgs/Odometry.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
 
@@ -69,7 +68,7 @@
  *             location and display map in RViz.
  */
 class TerpRescue {
-    private:
+ private:
         ros::NodeHandle nh;
 
         // Structure of a tag; contains the ID and pose
@@ -79,30 +78,30 @@ class TerpRescue {
             geometry_msgs::Point tagPoint;    // Tag pose in the world frame
         };
 
-        std::vector<tag> tagList;           // List of all located tags (packages)
+        std::vector<tag> tagList;         // List of all located tags (packages)
 
         geometry_msgs::Pose robotPose;      // Current robot pose
 
         nav_msgs::OccupancyGrid rawMap;     // Raw map from gmapping
 
-        nav_msgs::OccupancyGrid synthesizedMap;     // Synthesized map with package locations
+        // Synthesized map with package locations
+        nav_msgs::OccupancyGrid synthesizedMap;
         visualization_msgs::MarkerArray tagMarkers;
 
         std::vector<float> lidar;           // LIDAR data
 
         // sensor_msgs::Image cameraImage;     // Camera image data
 
-        std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;     // AR markers list data
-
-        // gazebo_msgs::ModelStates modelStatesList;     // Gazebo model information list data
+        // AR markers list data
+        std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
 
         nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
         // Default linear and turn speeds
-        double defaultLinearSpeed = 0.2;    // m/s
-	    double defaultAngularSpeed = 0.4;   // rad/s
+        double defaultLinearSpeed = 0.36;    // m/s
+        double defaultAngularSpeed = 0.42;   // rad/s
 
-        Localizer tagLocalizer;             // Instantiate a tag localizer object
+        Localizer tagLocalizer;            // Instantiate a tag localizer object
 
         Explorer explorer;                  // Instantiate an Explorer object
 
@@ -110,27 +109,29 @@ class TerpRescue {
         geometry_msgs::Twist robotVelocity;
 
         // LIDAR subscriber
-        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan",
-             1, &TerpRescue::lidarCallback, this);
+        ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>
+        ("/scan", 1, &TerpRescue::lidarCallback, this);
         std::vector<tf2::Transform> tagWorldTransformList;
 
         // AR tag subscriber
-        ros::Subscriber arSubscriber = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
-             &TerpRescue::arPoseCallback, this);
+        ros::Subscriber arSubscriber = nh.subscribe<ar_track_alvar_msgs::
+        AlvarMarkers>("/ar_pose_marker", 50, &TerpRescue::arPoseCallback, this);
 
         // Odometry subscriber
-        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
-             &TerpRescue::botOdomCallback, this);
+        ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>
+        ("/odom", 50, &TerpRescue::botOdomCallback, this);
 
         // Raw map subscriber
-        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/map",
-            1, &TerpRescue::mapCallback, this);
+        ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>
+        ("/map", 1, &TerpRescue::mapCallback, this);
 
         // Synthesized map publisher
-        ros::Publisher tagPublisher = nh.advertise<visualization_msgs::MarkerArray>("/tagsMarker", 10);
+        ros::Publisher tagPublisher = nh.advertise<visualization_msgs::
+        MarkerArray>("/tagsMarker", 10);
 
         // Publisher for mobile base velocity
-        ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1, this);
+        ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>
+        ("/cmd_vel", 1, this);
 
 
         /**
@@ -168,14 +169,15 @@ class TerpRescue {
          */
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
 
-    public:
+ public:
         /**
          * @brief   Calculates the Euclidean distance between two points
          * @param   pointA First point
          * @param   pointB Second point
          * @return  Euclidean distance as a double
          */
-        double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
+        double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::
+          Point pointB);
 
         /**
          * @brief   Constructor of the class which published initial robot velocity
@@ -201,12 +203,6 @@ class TerpRescue {
         std::vector<float> getLidar();
 
         /**
-         * @brief   Return current image data
-         * @return  cameraImage
-         */
-        // sensor_msgs::Image getCameraImage();
-
-        /**
          * @brief   Return current map data from gmapping
          * @return  rawMap
          */
@@ -230,10 +226,18 @@ class TerpRescue {
          */
         std::vector<tag> getTagList();
 
+        /**
+         * @brief   Return current markerList
+         * @return  markerList
+         */
         std::vector<ar_track_alvar_msgs::AlvarMarker> getMarkerList();
 
+        /**
+         * @brief   Return current tag transform in world frame
+         * @return  tagWorldTransformList
+         */
         std::vector<tf2::Transform> getTagWorldTransformList();
 };
 
 
-#endif  // INCLUDE_TERPRESCUE_H_
+#endif  // INCLUDE_TERPRESCUE_HPP_

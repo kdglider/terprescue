@@ -30,27 +30,30 @@
  *             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_EXPLORER_H_
-#define INCLUDE_EXPLORER_H_
+#ifndef INCLUDE_EXPLORER_HPP_
+#define INCLUDE_EXPLORER_HPP_
 
 #include <iostream>
 #include <vector>
 #include <cmath>
 
-/** @brief This class contains methods to help the robot navigate and explore the environment */
+/** @brief This class contains methods to help the robot navigate and
+           explore the environment */
 class Explorer {
-    private:
-        // LIDAR distance within which the robot will execute a random turn
-        double safeDistance = 0.6;      // m
+ private:
+        // LIDAR distance within which the robot will execute a turn
+        double safeDistance = 0.8;      // m
 
-        // Threshold within which a LIDAR reading will be used for cost calculation
+        // Threshold within which a LIDAR reading will be used for
+        // cost calculation
         double influenceThreshold = 5;  // m
 
         // Max LIDAR range
         double maxRange = 10;           // m
 
-    public:
-        // Number of array elements in LIDAR field of view (default 0 until set in lidarCallback())
+ public:
+        // Number of array elements in LIDAR field of view
+        // (default 0 until set in lidarCallback())
         int lidarSize = 0;
 
         // Array of LIDAR readings from a subscribed message
@@ -76,4 +79,4 @@ class Explorer {
 };
 
 
-#endif  // INCLUDE_EXPLORER_H_
+#endif  // INCLUDE_EXPLORER_HPP_
