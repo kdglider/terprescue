@@ -182,9 +182,6 @@ class TerpRescue {
          */
         TerpRescue();
 
-        /** @brief  Executes a turn to avoid an object */
-        void avoidObject();
-
         /**
          * @brief   display synthesized map in rviz
          * @return  void
