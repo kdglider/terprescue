@@ -46,6 +46,8 @@
 #include <ar_track_alvar_msgs/AlvarMarkers.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
 #include <vector>
 #include <string>
@@ -65,7 +67,7 @@ class TerpRescue {
 
         // Structure of a tag; contains the ID and pose
         struct tag{
-            std::string ID;                 // Decoded tag ID
+            int ID;                          // Decoded tag ID
             geometry_msgs::Point tagPoint;    // Tag pose in the world frame
         };
 
@@ -76,6 +78,7 @@ class TerpRescue {
         nav_msgs::OccupancyGrid rawMap;     // Raw map from gmapping
 
         nav_msgs::OccupancyGrid synthesizedMap;     // Synthesized map with package locations
+        visualization_msgs::MarkerArray tagMarkers;
 
         std::vector<float> lidar;           // LIDAR data
 
@@ -116,7 +119,7 @@ class TerpRescue {
             1, &TerpRescue::mapCallback, this);
         
         // Synthesized map publisher
-        ros::Publisher mapPublisher = nh.advertise<nav_msgs::OccupancyGrid>("/synthesizedmap", 10);
+        ros::Publisher tagPublisher = nh.advertise<visualization_msgs::MarkerArray>("/tagsMarker", 10);
 
         // Publisher for mobile base velocity
         ros::Publisher vel_pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel", 1, this);

@@ -6,5 +6,5 @@
     <include file="$(find terprescue)/launch/includes/ar_detector.launch"/>
 
     <!--Launch TerpRescue node-->
-    <node pkg="terprescue" type="terprescue" name="terprescue" output="screen" />
+    <!-- <node pkg="terprescue" type="terprescue" name="terprescue" output="screen" /> -->
 </launch>

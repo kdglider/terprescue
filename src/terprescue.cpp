@@ -53,7 +53,7 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
 
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
   rawMap = data;
-  // std::cout << rawMap.info<< std::endl;
+  visualization();
 }
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
@@ -83,7 +83,7 @@ TerpRescue::TerpRescue() {
     ros::Rate loop_rate(10);
 
     robotVelocity.linear.x = defaultLinearSpeed;
-	robotVelocity.angular.z = 0;
+    robotVelocity.angular.z = 0;
 
     vel_pub.publish(robotVelocity);
 }
@@ -99,21 +99,47 @@ void TerpRescue::randomTurn() {
 
     // Change velcity profile to turning
     robotVelocity.linear.x = 0;
-	robotVelocity.angular.z = defaultAngularSpeed;
+    robotVelocity.angular.z = defaultAngularSpeed;
 
-    // Keep turning until the random time is reached
-	while (secondsElapsed <= randomSeconds) {
-		vel_pub.publish(robotVelocity);
-		secondsElapsed = (std::clock() - start) / (double) CLOCKS_PER_SEC;
-	}
+      // Keep turning until the random time is reached
+    while (secondsElapsed <= randomSeconds) {
+    	vel_pub.publish(robotVelocity);
+    	secondsElapsed = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+    }
 
     // Change velocity profile back to moving forward
     robotVelocity.linear.x = defaultLinearSpeed;
-	robotVelocity.angular.z = 0;
+    robotVelocity.angular.z = 0;
     vel_pub.publish(robotVelocity);
 }
 
 void TerpRescue::visualization() {
+  if(tagList.size()>0) {   
+    std::cout << tagList.size() << std::endl;
+    tagMarkers.markers.clear();
+    tagPublisher.publish(tagMarkers);
+
+    // rviz_visual_tools::RvizVisualTools rviz_interface("map","/rviz_visual_markers");
+    // rviz_interface.deleteAllMarkers();
+    for (auto tag : tagList) {
+      visualization_msgs::Marker tagMarker;
+      tagMarker.header.frame_id = "map";
+      tagMarker.header.stamp = ros::Time();
+      tagMarker.id = tag.ID;
+      tagMarker.type = visualization_msgs::Marker::SPHERE;
+      tagMarker.pose.position = tag.tagPoint;
+      tagMarker.action = visualization_msgs::Marker::ADD;
+      tagMarker.color.a = 1;
+      tagMarker.color.r = 1;
+      tagMarker.scale.x = 1;
+      tagMarker.scale.y = 1;
+      tagMarkers.markers.push_back(tagMarker);
+      // std::cout << tagMarker << std::endl;
+    }
+    tagPublisher.publish(tagMarkers);
+  } else {
+    ROS_INFO_STREAM("No tag detected!");
+  }
 }
 
 double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB){
@@ -127,7 +153,7 @@ void TerpRescue::detectTags() {
   for(auto tagWorldTransform:tagWorldTransformList){
     tf2::Vector3 tagWorldTranslation = tagWorldTransform.getOrigin();
     tag tagInWorld;
-    tagInWorld.ID = "tag in world frame";
+    tagInWorld.ID = tagList.size();
     geometry_msgs::Point tagPoint;
     tagPoint.x = tagWorldTranslation.getX();
     tagPoint.y = tagWorldTranslation.getY();

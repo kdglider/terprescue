@@ -53,6 +53,7 @@ To be completed later
 	sudo apt-get install ros-kinetic-turtlebot3-*
 	sudo apt-get install ros-kinetic-gmapping
 	sudo apt-get install ros-kinetic-ar-track-alvar
+	sudo apt-get install ros-kinetic-rviz-visual-tools
 	mkdir -r terp_catkin/src && cd terp_catkin/src
 	git clone https://github.com/kdglider/terprescue.git
 	cd terprescue
