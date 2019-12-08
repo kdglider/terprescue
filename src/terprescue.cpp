@@ -170,6 +170,7 @@ void TerpRescue::detectTags() {
     if(minDistance > 0.1){
       tagList.emplace_back(tagInWorld);
     }
+  }
 }
 
 std::vector<ar_track_alvar_msgs::AlvarMarker> TerpRescue::getMarkerList() {
