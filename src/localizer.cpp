@@ -30,16 +30,9 @@
  *             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <opencv2/opencv.hpp>
-#include <opencv2/objdetect.hpp>
-#include <cv_bridge/cv_bridge.h>
 #include <localizer.hpp>
 
-/**
- * @brief    recognize if there is a tag in the current image
- * @return   void
- */
-bool Localizer::tagRecognition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList) {
+bool Localizer::recognizeTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList) {
   int markerSize = markerList.size();
   if(markerSize == 0){
     ROS_INFO_STREAM("No Tag In Sight.");
@@ -67,13 +60,10 @@ bool Localizer::tagRecognition(std::vector<ar_track_alvar_msgs::AlvarMarker> mar
   }
 }
 
-/**
- * @brief    locate tag regarding to robot frame
- * @return   void
- */
+
 std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList){
   std::vector<tf2::Transform> tagTransformList;
-  if(tagRecognition(markerList)){
+  if(recognizeTag(markerList)){
     for(auto marker : markerList){
       const geometry_msgs::PoseStamped arPoseStamped = marker.pose;
       const geometry_msgs::Pose arPose= arPoseStamped.pose;
@@ -97,33 +87,31 @@ std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs
   return tagTransformList;
 }
 
-/**
- * @brief    tranform tag location from robot frame to map frame
- * @return   void
- */
+
 std::vector<tf2::Transform> Localizer::transformationTagPosition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList, const nav_msgs::Odometry odomMsg) {
-  std::vector<tf2::Transform> tagTransformList;
-  std::vector<tf2::Transform> tagWorldTransformList;
-  tagTransformList = locateTag(markerList);
-  if(tagTransformList.size() > 0){
-    auto botPosition = odomMsg.pose.pose.position;
-    auto botOrientation = odomMsg.pose.pose.orientation;
-    float x = botPosition.x;
-    float y = botPosition.y;
-    float z = botPosition.z;
-    double xQuat = botOrientation.x;
-    double yQuat = botOrientation.y;
-    double zQuat = botOrientation.z;
-    double wQuat = botOrientation.w;
-    tf2::Quaternion botQuat(xQuat, yQuat, zQuat, wQuat);
-    tf2::Vector3 botVect(x, y, z);
-    tf2::Transform botTransform(botQuat, botVect);
-    for(auto tagTransform:tagTransformList){
-      tf2::Transform tagWorldTransform = botTransform*tagTransform;
-      tagWorldTransformList.emplace_back(tagWorldTransform);
+    std::vector<tf2::Transform> tagTransformList;
+    std::vector<tf2::Transform> tagWorldTransformList;
+    tagTransformList = locateTag(markerList);
+    if(tagTransformList.size() > 0){
+        auto botPosition = odomMsg.pose.pose.position;
+        auto botOrientation = odomMsg.pose.pose.orientation;
+        float x = botPosition.x;
+        float y = botPosition.y;
+        float z = botPosition.z;
+        double xQuat = botOrientation.x;
+        double yQuat = botOrientation.y;
+        double zQuat = botOrientation.z;
+        double wQuat = botOrientation.w;
+        tf2::Quaternion botQuat(xQuat, yQuat, zQuat, wQuat);
+        tf2::Vector3 botVect(x, y, z);
+        tf2::Transform botTransform(botQuat, botVect);
+        for(auto tagTransform:tagTransformList){
+        tf2::Transform tagWorldTransform = botTransform*tagTransform;
+        tagWorldTransformList.emplace_back(tagWorldTransform);
+        }
     }
-  }
-  return tagWorldTransformList;
+    
+    return tagWorldTransformList;
 }
 
 

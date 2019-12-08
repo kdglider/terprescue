@@ -53,29 +53,29 @@ TEST(Localizer, DummyTest) {
   EXPECT_EQ(1,1);
 }
 
-TEST(Localizer, tagRecognitionNoMarkerTest) {
+TEST(Localizer, recognizeTagNoMarkerTest) {
   std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
   Localizer tagLocalizer;
-  bool noMarker = tagLocalizer.tagRecognition(markerList);
+  bool noMarker = tagLocalizer.recognizeTag(markerList);
   EXPECT_EQ(noMarker, false);
 }
 
-TEST(Localizer, tagRecognitionZeroMarkerTest) {
+TEST(Localizer, recognizeTagZeroMarkerTest) {
   std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
   Localizer tagLocalizer;
   ar_track_alvar_msgs::AlvarMarker marker;
   markerList.emplace_back(marker);
-  bool zeroMarker = tagLocalizer.tagRecognition(markerList);
+  bool zeroMarker = tagLocalizer.recognizeTag(markerList);
   EXPECT_EQ(zeroMarker, true);
 }
 
-TEST(Localizer, tagRecognitionNanMarkerTest) {
+TEST(Localizer, recognizeTagNanMarkerTest) {
   std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
   Localizer tagLocalizer;
   ar_track_alvar_msgs::AlvarMarker marker;
   marker.pose.pose.position.x = sqrt(-1);
   markerList.emplace_back(marker);
-  bool nanMarker = tagLocalizer.tagRecognition(markerList);
+  bool nanMarker = tagLocalizer.recognizeTag(markerList);
   EXPECT_EQ(nanMarker, false);
 }
 

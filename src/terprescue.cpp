@@ -34,8 +34,6 @@
  */
 
 #include <terprescue.hpp>
-#include <iostream>
-
 
 void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     // Calculate lidarSize if it has not been set before
