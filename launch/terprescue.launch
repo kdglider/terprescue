@@ -1,7 +1,10 @@
 <launch>
-    <!--Bring up Gazebo environment-->
-    <include file="$(find terprescue)/launch/includes/environment_bring_up.launch"/>
-
-    <!--Launch AR tag detector-->
+    <!--Launch TerpRescue node-->
+    <node pkg="terprescue" type="terprescue" name="terprescue" output="screen" />
+    
+    <!--Launch AR tag detector node-->
     <include file="$(find terprescue)/launch/includes/ar_detector.launch"/>
+
+    <!--Launch gmapping node-->
+    <include file="$(find terprescue)/launch/includes/gmapping.launch"/>
 </launch>

@@ -11,6 +11,5 @@
         <param name="ymax"                  value="10.0"/>
         <!-- <param name="delta" value="0.1"/> -->
     </node>
-    <!--Launch TerpRescue node-->
-    <node pkg="terprescue" type="terprescue" name="terprescue" output="screen" />
+    
 </launch>
