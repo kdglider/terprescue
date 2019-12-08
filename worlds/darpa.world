@@ -564,63 +564,6 @@
       </link>
       <pose frame=''>4.32829 1.483695 0 0 -0 0</pose>
     </model>
-    <model name='Dumpster'>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <mesh>
-              <uri>model://dumpster/meshes/dumpster.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <max_contacts>10</max_contacts>
-          <surface>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-            <friction>
-              <torsional>
-                <ode/>
-              </torsional>
-              <ode/>
-            </friction>
-          </surface>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <mesh>
-              <uri>model://dumpster/meshes/dumpster.dae</uri>
-              <scale>1 1 1</scale>
-            </mesh>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://dumpster/materials/scripts</uri>
-              <uri>model://dumpster/materials/textures</uri>
-              <name>Dumpster/Diffuse</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <inertial>
-          <inertia>
-            <ixx>1</ixx>
-            <ixy>0</ixy>
-            <ixz>0</ixz>
-            <iyy>1</iyy>
-            <iyz>0</iyz>
-            <izz>1</izz>
-          </inertia>
-          <mass>1</mass>
-          <pose frame=''>0 0 0 0 -0 0</pose>
-        </inertial>
-        <kinematic>0</kinematic>
-        <gravity>1</gravity>
-        <enable_wind>0</enable_wind>
-      </link>
-      <pose frame=''>-0.293079 -4.23361 0 0 -0 0</pose>
-    </model>
     <model name='Lamp Post'>
       <static>1</static>
       <link name='link'>
@@ -872,7 +815,7 @@
       <pose frame=''>0.657139 1.00465 0 0 -0 0</pose>
     </model>
     <model name='AR0'>
-      <pose frame=''>1.81851 -6.63666 0.4 0 -0 0</pose>
+      <pose frame=''>2 -6 0.4 0 -0 0</pose>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>
@@ -897,7 +840,7 @@
       </link>
     </model>
     <model name='AR1'>
-      <pose frame=''>5.81851 -6.63666 0.4 0 -0 0</pose>
+      <pose frame=''>6 -6 0.4 0 -0 0</pose>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>
@@ -922,7 +865,7 @@
       </link>
     </model>
     <model name='AR2'>
-      <pose frame=''>3.81851 -1.63666 0.4 0 -0 0</pose>
+      <pose frame=''>4 -2 0.4 0 -0 0</pose>
       <static>1</static>
       <link name='link'>
         <visual name='visual'>

@@ -14,11 +14,14 @@ find_package(
     gazebo_msgs
     nav_msgs
     message_generation
+    visualization_msgs
     tf
     cv_bridge
 )
 find_package(OpenCV REQUIRED)
 find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
+
 
 # Generate added messages and services with any dependencies listed here
 generate_messages(
@@ -41,6 +44,7 @@ include_directories(
     ${catkin_INCLUDE_DIRS}
     ${OpenCV_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIR}
 )
 include_directories(vendor/googletest)
 
