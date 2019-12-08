@@ -158,8 +158,12 @@ class TerpRescue {
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
 
     public:
-        void run();
-
+        /**
+         * @brief    Calculates the Euclidean distance between two points
+         * @param    pointA First point
+         * @param    pointB Second point
+         * @return   Euclidean distance as a double
+         */
         double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
 
         /**
