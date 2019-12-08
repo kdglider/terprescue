@@ -35,7 +35,7 @@
 // TODO Use C++ 11 style
 // for const float* i = lidarArray.begin();i != .end(); ++i 
 
-bool Explorer::detectObject(std::vector<float> lidarArray) {
+bool Explorer::detectObject() {
     // Check LIDAR array for any readings below safeDistance
     for (int i = 0 ; i < lidarSize ; i++) {
         // Reject corrupt readings
@@ -52,7 +52,7 @@ bool Explorer::detectObject(std::vector<float> lidarArray) {
 }
 
 
-void Explorer::updateLidarCosts(std::vector<float> lidarArray) {
+void Explorer::updateLidarCosts() {
     int lowIndex = 0;
 	int highIndex = lidarSize;
 	int centerIndex = lidarSize/2;
@@ -64,15 +64,18 @@ void Explorer::updateLidarCosts(std::vector<float> lidarArray) {
 	// Sweep lidarArray for all readings and update left/right costs
 	for(int i = lowIndex ; i < centerIndex ; i++) {
 		if (std::isnan(lidarArray[i]) == false && lidarArray[i] < influenceThreshold) {
-            leftCost += 1/(lidarArray[i]);
+            rightCost += 1/(lidarArray[i]);
 		}
 	}
 
 	for(int i = centerIndex ; i < highIndex ; i++) {
 		if (std::isnan(lidarArray[i]) == false && lidarArray[i] < influenceThreshold) {
-            rightCost += 1/(lidarArray[i]);
+            leftCost += 1/(lidarArray[i]);
 		}
 	}
+
+    std::cout << "Left Cost: " << leftCost << std::endl;
+    std::cout << "Right Cost: " << rightCost << std::endl;
 
 }
 

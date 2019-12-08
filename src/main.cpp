@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
 
     TerpRescue terpRescue;
 
+    // boost::thread t = boost::thread(boost::bind(&ros::spin));
     ros::spin();
 
     return 0;

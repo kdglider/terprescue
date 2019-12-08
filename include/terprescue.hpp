@@ -48,6 +48,12 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
 
+/*
+#include <boost/thread/mutex.hpp>
+#include <boost/thread/thread.hpp>
+#include <boost/tokenizer.hpp>
+*/
+
 #include <vector>
 #include <string>
 #include <cmath>
@@ -124,102 +130,102 @@ class TerpRescue {
 
 
         /**
-         * @brief    callback function of lidar
-         * @param    lidar data: sensor_msgs::LaserScan
-         * @return   void
+         * @brief   callback function of lidar
+         * @param   lidar data: sensor_msgs::LaserScan
+         * @return  void
          */
         void lidarCallback(const sensor_msgs::LaserScan msg);
 
         /**
-         * @brief    callback function of camera
-         * @param    lidar data: sensor_msgs::Image
-         * @return   void
+         * @brief   callback function of camera
+         * @param   lidar data: sensor_msgs::Image
+         * @return  void
          */
         // void cameraCallback(const sensor_msgs::Image data);
 
         /**
-         * @brief    callback function of map
-         * @param    lidar data: nav_msgs::OccupancyGrid
-         * @return   void
+         * @brief   callback function of map
+         * @param   lidar data: nav_msgs::OccupancyGrid
+         * @return  void
          */
         void mapCallback(const nav_msgs::OccupancyGrid data);
 
         /**
-         * @brief    callback function of odom
-         * @param    lidar data: nav_msgs::Odometry
-         * @return   void
+         * @brief   callback function of odom
+         * @param   lidar data: nav_msgs::Odometry
+         * @return  void
          */
         void botOdomCallback(const nav_msgs::Odometry msgs);
 
         /**
-         * @brief    callback function of AR
-         * @param    AR data: ar_track_alvar_msgs::AlvarMarkers
-         * @return   void
+         * @brief   callback function of AR
+         * @param   AR data: ar_track_alvar_msgs::AlvarMarkers
+         * @return  void
          */
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
 
     public:
         /**
-         * @brief    Calculates the Euclidean distance between two points
-         * @param    pointA First point
-         * @param    pointB Second point
-         * @return   Euclidean distance as a double
+         * @brief   Calculates the Euclidean distance between two points
+         * @param   pointA First point
+         * @param   pointB Second point
+         * @return  Euclidean distance as a double
          */
         double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB);
 
         /**
-         * @brief    Constructor of the class which initialize parameters
+         * @brief   Constructor of the class which published initial robot velocity
          */
         TerpRescue();
 
-        /** @brief Executes a turn for a constrained random amount of time */
-        void randomTurn();
+        /** @brief  Executes a turn to avoid an object */
+        void avoidObject();
 
         /**
-         * @brief    display synthesized map in rviz
-         * @return   void
+         * @brief   display synthesized map in rviz
+         * @return  void
          */
         void visualization();
 
         /**
-         * @brief    use sensor datas to detect tags and get their locations
-         * @return   void
+         * @brief   use sensor datas to detect tags and get their locations
+         * @return  void
          */
         void detectTags();
 
         /**
-         * @brief    Return current lidar data
-         * @return   lidar
+         * @brief   Return current lidar data
+         * @return  lidar
          */
         std::vector<float> getLidar();
 
         /**
-         * @brief    Return current image data
-         * @return   cameraImage
+         * @brief   Return current image data
+         * @return  cameraImage
          */
         // sensor_msgs::Image getCameraImage();
 
         /**
-         * @brief    Return current map data from gmapping
-         * @return   rawMap
+         * @brief   Return current map data from gmapping
+         * @return  rawMap
          */
         nav_msgs::OccupancyGrid getRawMap();
 
         /**
-         * @brief    Return synthesized map data include detected tags
-         * @return   synthesizedMap
+         * @brief   Return synthesized map data include detected tags
+         * @return  synthesizedMap
          */
         nav_msgs::OccupancyGrid getSynthesizedMap();
 
         /**
-         * @brief    Return current pose of robot
-         * @return   robotPose
+         * @brief   Return current pose of robot
+         * @return  robotPose
          */
         geometry_msgs::Pose getRobotPose();
 
         /**
-         * @brief    Return current tag list
-         * @return   tagList
+         * @brief   Return current tag list
+         * @return  tagList
          */
         std::vector<tag> getTagList();
 

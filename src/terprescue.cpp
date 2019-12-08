@@ -40,14 +40,32 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     if (explorer.lidarSize == 0) {
         int lidarSize = (msg.angle_max - msg.angle_min)/msg.angle_increment;
         explorer.lidarSize = lidarSize;
-        ROS_INFO_STREAM("LIDAR Size: " << lidarSize);
     }
 
-    std::vector<float> lidarArray = msg.ranges;
+    explorer.lidarArray = msg.ranges;
+    explorer.updateLidarCosts();
 
-    if (explorer.detectObject(lidarArray) == true) {
-        ROS_INFO_STREAM("Object detected");
-        randomTurn();
+    if (explorer.leftCost + explorer.rightCost > 155) {
+        robotVelocity.linear.x = 0;
+        robotVelocity.angular.z = defaultAngularSpeed;
+        vel_pub.publish(robotVelocity);
+    } else if (explorer.detectObject() == true || explorer.leftCost > 80 || explorer.rightCost > 80) {
+        // Turn to avoid the object if one is within the safe distance
+        // Change velcity profile to turn left or right depending on the LIDAR costs
+        if (explorer.leftCost < explorer.rightCost) {
+            robotVelocity.linear.x = 0;
+            robotVelocity.angular.z = defaultAngularSpeed;
+        } else {
+            robotVelocity.linear.x = 0;
+            robotVelocity.angular.z = -defaultAngularSpeed;
+        }
+
+        vel_pub.publish(robotVelocity);
+    } else {
+        // Change velocity profile back to moving forward
+        robotVelocity.linear.x = defaultLinearSpeed;
+        robotVelocity.angular.z = 0;
+        vel_pub.publish(robotVelocity);
     }
 }
 
@@ -88,23 +106,32 @@ TerpRescue::TerpRescue() {
     vel_pub.publish(robotVelocity);
 }
 
-void TerpRescue::randomTurn() {
-    // Create and start a timer
+void TerpRescue::avoidObject() {
+    /* // Create and start a timer
 	std::clock_t start;
 	start = std::clock();
-    double secondsElapsed = 0;
+    double secondsElapsed = 0; */
 
     // Random time (between 1-5 seconds) to turn for
-    double randomSeconds = rand() % 5 + 1;
+    //double randomSeconds = rand() % 5 + 1;
 
-    // Change velcity profile to turning
-    robotVelocity.linear.x = 0;
-	robotVelocity.angular.z = defaultAngularSpeed;
+    //Update LIDAR costs
+    explorer.updateLidarCosts();
 
-    // Keep turning until the random time is reached
-	while (secondsElapsed <= randomSeconds) {
-		vel_pub.publish(robotVelocity);
-		secondsElapsed = (std::clock() - start) / (double) CLOCKS_PER_SEC;
+    // Change velcity profile to turn left or right depending on the LIDAR costs
+    if (explorer.leftCost < explorer.rightCost) {
+        robotVelocity.linear.x = 0;
+	    robotVelocity.angular.z = defaultAngularSpeed;
+    } else {
+        robotVelocity.linear.x = 0;
+	    robotVelocity.angular.z = -defaultAngularSpeed;
+    }
+    
+    // Keep turning until the left and right costs are about equal
+    vel_pub.publish(robotVelocity);
+	while (abs(explorer.leftCost - explorer.rightCost) > explorer.costTolerance) {
+        explorer.updateLidarCosts();
+		//secondsElapsed = (std::clock() - start) / (double) CLOCKS_PER_SEC;
 	}
 
     // Change velocity profile back to moving forward

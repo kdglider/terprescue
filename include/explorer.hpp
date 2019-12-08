@@ -53,22 +53,26 @@ class Explorer {
         // Number of array elements in LIDAR field of view (default 0 until set in lidarCallback())
         int lidarSize = 0;
 
+        // Array of LIDAR readings from a subscribed message
+        std::vector<float> lidarArray;
+
+        // Tolerance to consider left and right costs to be equal
+        double costTolerance = 5;
+
         // LIDAR reading costs
         double leftCost = 0;
         double rightCost = 0;
 
         /**
          * @brief   Checks to see if an object is close to the robot
-         * @param   lidarArray Array of LIDAR readings from subscribed message
          * @return  True/False depending on if an object is within the safe distance
          */
-        bool detectObject(std::vector<float> lidarArray);
+        bool detectObject();
 
         /**
          * @brief   Calculates and updates the left and right costs of the LIDAR readings
-         * @param lidarArray Array of LIDAR readings from subscribed message
          */
-        void updateLidarCosts(std::vector<float> lidarArray);
+        void updateLidarCosts();
 };
 
 
