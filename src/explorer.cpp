@@ -32,16 +32,14 @@
 
 #include <explorer.hpp>
 
-// TODO Use C++ 11 style
-// for const float* i = lidarArray.begin();i != .end(); ++i 
-
 bool Explorer::detectObject() {
     // Check LIDAR array for any readings below safeDistance
     for (int i = 0 ; i < lidarSize ; i++) {
         // Reject corrupt readings
         if (std::isnan(lidarArray[i]) == false) {
             if (lidarArray[i] < safeDistance) {
-                // Return true if any reading registers an object closer than safeDistance
+                // Return true if any reading registers an object closer than
+                // safeDistance
                 return true;
             }
         }
@@ -54,29 +52,28 @@ bool Explorer::detectObject() {
 
 void Explorer::updateLidarCosts() {
     int lowIndex = 0;
-	int highIndex = lidarSize;
-	int centerIndex = lidarSize/2;
+    int highIndex = lidarSize;
+    int centerIndex = lidarSize/2;
 
-	// Reset costs
-	leftCost = 0;
-	rightCost = 0;
+    // Reset costs
+    leftCost = 0;
+    rightCost = 0;
 
-	// Sweep lidarArray for all readings and update left/right costs
-	for(int i = lowIndex ; i < centerIndex ; i++) {
-		if (std::isnan(lidarArray[i]) == false && lidarArray[i] < influenceThreshold) {
-            rightCost += 1/(lidarArray[i]);
-		}
-	}
+    // Sweep lidarArray for all readings and update left/right costs
+    for (int i = lowIndex ; i < centerIndex ; i++) {
+      if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
+          influenceThreshold) {
+          rightCost += 1/(lidarArray[i]);
+      }
+    }
 
-	for(int i = centerIndex ; i < highIndex ; i++) {
-		if (std::isnan(lidarArray[i]) == false && lidarArray[i] < influenceThreshold) {
+    for (int i = centerIndex ; i < highIndex ; i++) {
+      if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
+          influenceThreshold) {
             leftCost += 1/(lidarArray[i]);
-		}
-	}
+      }
+    }
 
     std::cout << "Left Cost: " << leftCost << std::endl;
     std::cout << "Right Cost: " << rightCost << std::endl;
-
 }
-
-

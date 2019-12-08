@@ -33,41 +33,41 @@
 
 #include <localizer.hpp>
 
-bool Localizer::recognizeTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList) {
+bool Localizer::recognizeTag(std::vector<ar_track_alvar_msgs::AlvarMarker>
+                             markerList) {
   int markerSize = markerList.size();
-  if(markerSize == 0){
+  if (markerSize == 0) {
     ROS_INFO_STREAM("No Tag In Sight.");
     return false;
-  }
-  else{
-    for(auto marker : markerList){
+  } else {
+    for (auto marker : markerList) {
       const geometry_msgs::PoseStamped arPoseStamped = marker.pose;
-      const geometry_msgs::Pose arPose= arPoseStamped.pose;
+      const geometry_msgs::Pose arPose = arPoseStamped.pose;
       const geometry_msgs::Point arPoint = arPose.position;
       float x = arPoint.x;
       float y = arPoint.y;
       float z = arPoint.z;
-      if(std::isnan(x) || std::isnan(y) || std::isnan(z)){
+      if (std::isnan(x) || std::isnan(y) || std::isnan(z)) {
         markerSize -= 1;
       }
   }
-  if(markerSize <= 0){
+  if (markerSize <= 0) {
     ROS_INFO_STREAM("No Tag In Sight.");
     return false;
-  }
-  else{
+  } else {
     return true;
   }
   }
 }
 
 
-std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList){
+std::vector<tf2::Transform> Localizer::locateTag(std::vector
+              <ar_track_alvar_msgs::AlvarMarker> markerList) {
   std::vector<tf2::Transform> tagTransformList;
-  if(recognizeTag(markerList)){
-    for(auto marker : markerList){
+  if (recognizeTag(markerList)) {
+    for (auto marker : markerList) {
       const geometry_msgs::PoseStamped arPoseStamped = marker.pose;
-      const geometry_msgs::Pose arPose= arPoseStamped.pose;
+      const geometry_msgs::Pose arPose = arPoseStamped.pose;
       const geometry_msgs::Point arPoint = arPose.position;
       const geometry_msgs::Quaternion arOri = arPose.orientation;
       float x = arPoint.x;
@@ -77,7 +77,7 @@ std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs
       double yQuat = arOri.y;
       double zQuat = arOri.z;
       double wQuat = arOri.w;
-      if(!(std::isnan(x) || std::isnan(y) || std::isnan(z))){
+      if (!(std::isnan(x) || std::isnan(y) || std::isnan(z))) {
         tf2::Quaternion tagQuat(xQuat, yQuat, zQuat, wQuat);
         tf2::Vector3 tagVect(x, y, z);
         tf2::Transform tagTransform(tagQuat, tagVect);
@@ -89,11 +89,13 @@ std::vector<tf2::Transform> Localizer::locateTag(std::vector<ar_track_alvar_msgs
 }
 
 
-std::vector<tf2::Transform> Localizer::transformationTagPosition(std::vector<ar_track_alvar_msgs::AlvarMarker> markerList, const nav_msgs::Odometry odomMsg) {
+std::vector<tf2::Transform> Localizer::transformationTagPosition(const std::
+  vector<ar_track_alvar_msgs::AlvarMarker> &markerList,
+  const nav_msgs::Odometry odomMsg) {
     std::vector<tf2::Transform> tagTransformList;
     std::vector<tf2::Transform> tagWorldTransformList;
     tagTransformList = locateTag(markerList);
-    if(tagTransformList.size() > 0){
+    if (tagTransformList.size() > 0) {
         auto botPosition = odomMsg.pose.pose.position;
         auto botOrientation = odomMsg.pose.pose.orientation;
         float x = botPosition.x;
@@ -106,13 +108,11 @@ std::vector<tf2::Transform> Localizer::transformationTagPosition(std::vector<ar_
         tf2::Quaternion botQuat(xQuat, yQuat, zQuat, wQuat);
         tf2::Vector3 botVect(x, y, z);
         tf2::Transform botTransform(botQuat, botVect);
-        for(auto tagTransform:tagTransformList){
+        for (auto tagTransform : tagTransformList) {
         tf2::Transform tagWorldTransform = botTransform*tagTransform;
         tagWorldTransformList.emplace_back(tagWorldTransform);
         }
     }
-    
+
     return tagWorldTransformList;
 }
-
-

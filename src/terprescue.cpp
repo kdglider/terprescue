@@ -54,13 +54,15 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     explorer.lidarArray = msg.ranges;
     explorer.updateLidarCosts();
 
-    if (explorer.leftCost + explorer.rightCost > 155) {
+    if (explorer.leftCost + explorer.rightCost > 135) {
         robotVelocity.linear.x = 0;
         robotVelocity.angular.z = defaultAngularSpeed;
         vel_pub.publish(robotVelocity);
-    } else if (explorer.detectObject() == true || explorer.leftCost > 80 || explorer.rightCost > 80) {
+    } else if (explorer.detectObject() == true || explorer.leftCost > 80 ||
+               explorer.rightCost > 80) {
         // Turn to avoid the object if one is within the safe distance
-        // Change velcity profile to turn left or right depending on the LIDAR costs
+        // Change velcity profile to turn left or right
+        // depending on the LIDAR costs
         if (explorer.leftCost < explorer.rightCost) {
             robotVelocity.linear.x = 0;
             robotVelocity.angular.z = defaultAngularSpeed;
@@ -83,7 +85,7 @@ void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
   visualization();
 }
 
-void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
+void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs) {
     markerList = msgs.markers;
 }
 
@@ -91,31 +93,23 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs) {
     botOdom = msgs;
     auto botPosition = botOdom.pose.pose.position;
     auto botOrientation = botOdom.pose.pose.orientation;
-    float x = botPosition.x;
-    float y = botPosition.y;
-    float z = botPosition.z;
-    float xQuat = botOrientation.x;
-    float yQuat = botOrientation.y;
-    float zQuat = botOrientation.z;
-    float wQuat = botOrientation.w;
-    tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, msgs);
-    // std::cout<< "\ntag World tf List size: "<<tagWorldTransformList.size() <<std::endl;
-    // std::cout<<"\nTurtlebot Position: " << x << ", " << y << ", " << z << std::endl;
-    if(tagWorldTransformList.size() > 0) {
+    tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList,
+                                                                   msgs);
+    if (tagWorldTransformList.size() > 0) {
         detectTags();
     }
 }
 
 
 void TerpRescue::visualization() {
-    if(tagList.size()>0) {
+    if (tagList.size() > 0) {
         std::cout << tagList.size() << std::endl;
         tagMarkers.markers.clear();
         tagPublisher.publish(tagMarkers);
-
-        // rviz_visual_tools::RvizVisualTools rviz_interface("map","/rviz_visual_markers");
-        // rviz_interface.deleteAllMarkers();
         for (auto tag : tagList) {
+            if (tag.positionCount < 75) {
+              continue;
+            }
             visualization_msgs::Marker tagMarker;
             tagMarker.header.frame_id = "map";
             tagMarker.header.stamp = ros::Time();
@@ -128,7 +122,6 @@ void TerpRescue::visualization() {
             tagMarker.scale.x = 0.5;
             tagMarker.scale.y = 0.5;
             tagMarkers.markers.push_back(tagMarker);
-            // std::cout << tagMarker << std::endl;
         }
         tagPublisher.publish(tagMarkers);
     } else {
@@ -136,14 +129,17 @@ void TerpRescue::visualization() {
     }
 }
 
-double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB) {
-    double distanceSquare = pow(pointA.x-pointB.x, 2) + pow(pointA.y-pointB.y, 2) + pow(pointA.z-pointB.z, 2);
+double TerpRescue::getPointDistance(geometry_msgs::Point pointA,
+                                    geometry_msgs::Point pointB) {
+    double distanceSquare = pow(pointA.x-pointB.x, 2) +
+                            pow(pointA.y-pointB.y, 2) +
+                            pow(pointA.z-pointB.z, 2);
     double distance = sqrt(distanceSquare);
     return distance;
 }
 
 void TerpRescue::detectTags() {
-    for(auto tagWorldTransform:tagWorldTransformList) {
+    for (auto tagWorldTransform : tagWorldTransformList) {
         tf2::Vector3 tagWorldTranslation = tagWorldTransform.getOrigin();
         tag tagInWorld;
         tagInWorld.ID = tagList.size();
@@ -152,44 +148,34 @@ void TerpRescue::detectTags() {
         tagPoint.x = tagWorldTranslation.getX();
         tagPoint.y = tagWorldTranslation.getY();
         tagPoint.z = tagWorldTranslation.getZ();
-        if(tagPoint.z < 0){
+        if (tagPoint.z < 0 || tagPoint.z > 0.8) {
+            continue;
+        }
+        if (tagPoint.x < -1.5 || tagPoint.x > 10) {
+            continue;
+        }
+        if (tagPoint.y < -8 || tagPoint.y > 1.5) {
             continue;
         }
         tagPoint.z = 0.1;
-        geometry_msgs::Point tagPointA;
-        geometry_msgs::Point tagPointB;
-        geometry_msgs::Point tagPointC;
-        tagPointA.x = 2;
-        tagPointA.y = -6;
-        tagPointA.z = 0.1;
-        tagPointB.x = 6;
-        tagPointB.y = -6;
-        tagPointB.z = 0.1;
-        tagPointC.x = 4;
-        tagPointC.y = -2;
-        tagPointC.z = 0.1;
-        if(getPointDistance(tagPoint, tagPointA) > 0.9 && getPointDistance(tagPoint, tagPointB) > 0.9 && getPointDistance(tagPoint, tagPointC) > 0.9) {
-            continue;
-        }
         tagInWorld.tagPoint = tagPoint;
-        // std::cout<<"Tag World Position: " << tagPoint.x <<", "<<tagPoint.y<<", "<<tagPoint.z;
         double minDistance = 20;
-        for(auto tagItem:tagList) {
+        for (auto &tagItem : tagList) {
             double distance = getPointDistance(tagPoint, tagItem.tagPoint);
-            if(minDistance > distance) {
+            if (minDistance > distance) {
                 minDistance = distance;
             }
-            if(distance < 0.2) {
-                continue;
-            }
-            if(distance < 1.2) {
+            if (distance <= 2) {
                 tagItem.positionCount += 1;
-                tagItem.tagPoint.x = (tagItem.tagPoint.x * tagItem.positionCount + tagPoint.x)/(tagItem.positionCount + 1);
-                tagItem.tagPoint.y = (tagItem.tagPoint.y * tagItem.positionCount + tagPoint.y)/(tagItem.positionCount + 1);
+                tagItem.tagPoint.x = (tagItem.tagPoint.x *
+                                      tagItem.positionCount +
+                                      tagPoint.x)/(tagItem.positionCount + 1);
+                tagItem.tagPoint.y = (tagItem.tagPoint.y *
+                                      tagItem.positionCount +
+                                      tagPoint.y)/(tagItem.positionCount + 1);
             }
         }
-        // std::cout<<"\nMin Distance: "<<minDistance<<std::endl;
-        if(minDistance > 1.2){
+        if (minDistance > 2) {
             tagList.emplace_back(tagInWorld);
         }
     }
@@ -201,22 +187,6 @@ std::vector<ar_track_alvar_msgs::AlvarMarker> TerpRescue::getMarkerList() {
 
 std::vector<tf2::Transform> TerpRescue::getTagWorldTransformList() {
     return tagWorldTransformList;
-}
-
-std::vector<float> TerpRescue::getLidar() {
-    return lidar;
-}
-
-nav_msgs::OccupancyGrid TerpRescue::getRawMap() {
-    return rawMap;
-}
-
-nav_msgs::OccupancyGrid TerpRescue::getSynthesizedMap() {
-    return synthesizedMap;
-}
-
-geometry_msgs::Pose TerpRescue::getRobotPose() {
-    return robotPose;
 }
 
 std::vector<TerpRescue::tag> TerpRescue::getTagList() {
