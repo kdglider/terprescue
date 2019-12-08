@@ -114,7 +114,7 @@ void TerpRescue::randomTurn() {
 }
 
 void TerpRescue::visualization() {
-  if(tagList.size()>0) {   
+  if(tagList.size()>0) {
     std::cout << tagList.size() << std::endl;
     tagMarkers.markers.clear();
     tagPublisher.publish(tagMarkers);
@@ -131,8 +131,8 @@ void TerpRescue::visualization() {
       tagMarker.action = visualization_msgs::Marker::ADD;
       tagMarker.color.a = 1;
       tagMarker.color.r = 1;
-      tagMarker.scale.x = 1;
-      tagMarker.scale.y = 1;
+      tagMarker.scale.x = 0.5;
+      tagMarker.scale.y = 0.5;
       tagMarkers.markers.push_back(tagMarker);
       // std::cout << tagMarker << std::endl;
     }
@@ -153,10 +153,30 @@ void TerpRescue::detectTags() {
     tf2::Vector3 tagWorldTranslation = tagWorldTransform.getOrigin();
     tag tagInWorld;
     tagInWorld.ID = tagList.size();
+    tagInWorld.positionCount = 0;
     geometry_msgs::Point tagPoint;
     tagPoint.x = tagWorldTranslation.getX();
     tagPoint.y = tagWorldTranslation.getY();
     tagPoint.z = tagWorldTranslation.getZ();
+    if(tagPoint.z < 0){
+      continue;
+    }
+    tagPoint.z = 0.1;
+    geometry_msgs::Point tagPointA;
+    geometry_msgs::Point tagPointB;
+    geometry_msgs::Point tagPointC;
+    tagPointA.x = 2;
+    tagPointA.y = -6;
+    tagPointA.z = 0.1;
+    tagPointB.x = 6;
+    tagPointB.y = -6;
+    tagPointB.z = 0.1;
+    tagPointC.x = 4;
+    tagPointC.y = -2;
+    tagPointC.z = 0.1;
+    if(getPointDistance(tagPoint, tagPointA) > 0.9 && getPointDistance(tagPoint, tagPointB) > 0.9 && getPointDistance(tagPoint, tagPointC) > 0.9){
+      continue;
+    }
     tagInWorld.tagPoint = tagPoint;
     // std::cout<<"Tag World Position: " << tagPoint.x <<", "<<tagPoint.y<<", "<<tagPoint.z;
     double minDistance = 20;
@@ -165,9 +185,17 @@ void TerpRescue::detectTags() {
       if(minDistance > distance){
         minDistance = distance;
       }
+      if(distance < 0.2){
+        continue;
+      }
+      if(distance < 1.2){
+        tagItem.positionCount += 1;
+        tagItem.tagPoint.x = (tagItem.tagPoint.x * tagItem.positionCount + tagPoint.x)/(tagItem.positionCount + 1);
+        tagItem.tagPoint.y = (tagItem.tagPoint.y * tagItem.positionCount + tagPoint.y)/(tagItem.positionCount + 1);
+      }
     }
     // std::cout<<"\nMin Distance: "<<minDistance<<std::endl;
-    if(minDistance > 0.1){
+    if(minDistance > 1.2){
       tagList.emplace_back(tagInWorld);
     }
   }
