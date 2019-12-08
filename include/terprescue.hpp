@@ -69,6 +69,7 @@ class TerpRescue {
         // Structure of a tag; contains the ID and pose
         struct tag{
             int ID;                          // Decoded tag ID
+            int positionCount;
             geometry_msgs::Point tagPoint;    // Tag pose in the world frame
         };
 
@@ -97,7 +98,7 @@ class TerpRescue {
 
         Localizer tagLocalizer;             // Instantiate a tag localizer object
 
-        Explorer explorer;                  // Instantiate an Explorer object 
+        Explorer explorer;                  // Instantiate an Explorer object
 
         // Robot velocity message to be published
         geometry_msgs::Twist robotVelocity;
@@ -106,7 +107,7 @@ class TerpRescue {
         ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>("/scan",
              1, &TerpRescue::lidarCallback, this);
         std::vector<tf2::Transform> tagWorldTransformList;
-        
+
         // AR tag subscriber
         ros::Subscriber arSubscriber = nh.subscribe<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50,
              &TerpRescue::arPoseCallback, this);
@@ -114,11 +115,11 @@ class TerpRescue {
         // Odometry subscriber
         ros::Subscriber odomSubscriber = nh.subscribe<nav_msgs::Odometry>("/odom", 50,
              &TerpRescue::botOdomCallback, this);
-        
+
         // Raw map subscriber
         ros::Subscriber mapSubscriber = nh.subscribe<nav_msgs::OccupancyGrid>("/map",
             1, &TerpRescue::mapCallback, this);
-        
+
         // Synthesized map publisher
         ros::Publisher tagPublisher = nh.advertise<visualization_msgs::MarkerArray>("/tagsMarker", 10);
 
@@ -227,7 +228,7 @@ class TerpRescue {
         std::vector<tag> getTagList();
 
         std::vector<ar_track_alvar_msgs::AlvarMarker> getMarkerList();
-        
+
         std::vector<tf2::Transform> getTagWorldTransformList();
 };
 
