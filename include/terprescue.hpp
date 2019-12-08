@@ -1,4 +1,5 @@
-/**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
+/**
+ * Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       terprescue.hpp
  * @date       11/23/2019
  * @brief      This class defined class of TerpRescue which is the main class of this project
