@@ -39,21 +39,36 @@
 
 /** @brief This class contains methods to help the robot navigate and explore the environment */
 class Explorer {
-    public:
+    private:
         // LIDAR distance within which the robot will execute a random turn
-        double safeDistance = 0.6;          // m
+        double safeDistance = 0.6;      // m
 
+        // Threshold within which a LIDAR reading will be used for cost calculation
+        double influenceThreshold = 5;  // m
+
+        // Max LIDAR range
+        double maxRange = 10;           // m
+
+    public:
         // Number of array elements in LIDAR field of view (default 0 until set in lidarCallback())
         int lidarSize = 0;
 
-        /** @brief Constructor that initializes the first robotVelocity publish */
-        Explorer();
+        // LIDAR reading costs
+        double leftCost = 0;
+        double rightCost = 0;
 
         /**
-         * @brief Checks to see if an object is close to the robot
-         * @param lidarArray Array of LIDAR readings from subscribed message
+         * @brief   Checks to see if an object is close to the robot
+         * @param   lidarArray Array of LIDAR readings from subscribed message
+         * @return  True/False depending on if an object is within the safe distance
          */
         bool detectObject(std::vector<float> lidarArray);
+
+        /**
+         * @brief   Calculates and updates the left and right costs of the LIDAR readings
+         * @param lidarArray Array of LIDAR readings from subscribed message
+         */
+        void updateLidarCosts(std::vector<float> lidarArray);
 };
 
 

@@ -57,26 +57,26 @@ void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
 }
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs){
-  markerList = msgs.markers;
+    markerList = msgs.markers;
 }
 
-void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs){
-  botOdom = msgs;
-  auto botPosition = botOdom.pose.pose.position;
-  auto botOrientation = botOdom.pose.pose.orientation;
-  float x = botPosition.x;
-  float y = botPosition.y;
-  float z = botPosition.z;
-  float xQuat = botOrientation.x;
-  float yQuat = botOrientation.y;
-  float zQuat = botOrientation.z;
-  float wQuat = botOrientation.w;
-  tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, msgs);
-  // std::cout<< "\ntag World tf List size: "<<tagWorldTransformList.size() <<std::endl;
-  // std::cout<<"\nTurtlebot Position: " << x << ", " << y << ", " << z << std::endl;
-  if(tagWorldTransformList.size() > 0){
-    detectTags();
-  }
+void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs) {
+    botOdom = msgs;
+    auto botPosition = botOdom.pose.pose.position;
+    auto botOrientation = botOdom.pose.pose.orientation;
+    float x = botPosition.x;
+    float y = botPosition.y;
+    float z = botPosition.z;
+    float xQuat = botOrientation.x;
+    float yQuat = botOrientation.y;
+    float zQuat = botOrientation.z;
+    float wQuat = botOrientation.w;
+    tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList, msgs);
+    // std::cout<< "\ntag World tf List size: "<<tagWorldTransformList.size() <<std::endl;
+    // std::cout<<"\nTurtlebot Position: " << x << ", " << y << ", " << z << std::endl;
+    if(tagWorldTransformList.size() > 0) {
+        detectTags();
+    }
 }
 
 TerpRescue::TerpRescue() {
@@ -142,11 +142,10 @@ void TerpRescue::visualization() {
   }
 }
 
-double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB){
-  double distanceSquare = pow(pointA.x-pointB.x, 2) + pow(pointA.y-pointB.y, 2)
-                    + pow(pointA.z-pointB.z, 2);
-  double distance = sqrt(distanceSquare);
-  return distance;
+double TerpRescue::getPointDistance(geometry_msgs::Point pointA, geometry_msgs::Point pointB) {
+    double distanceSquare = pow(pointA.x-pointB.x, 2) + pow(pointA.y-pointB.y, 2) + pow(pointA.z-pointB.z, 2);
+    double distance = sqrt(distanceSquare);
+    return distance;
 }
 
 void TerpRescue::detectTags() {
@@ -171,15 +170,14 @@ void TerpRescue::detectTags() {
     if(minDistance > 0.1){
       tagList.emplace_back(tagInWorld);
     }
-  }
 }
 
-std::vector<ar_track_alvar_msgs::AlvarMarker> TerpRescue::getMarkerList(){
-  return markerList;
+std::vector<ar_track_alvar_msgs::AlvarMarker> TerpRescue::getMarkerList() {
+    return markerList;
 }
 
-std::vector<tf2::Transform> TerpRescue::getTagWorldTransformList(){
-  return tagWorldTransformList;
+std::vector<tf2::Transform> TerpRescue::getTagWorldTransformList() {
+    return tagWorldTransformList;
 }
 
 std::vector<float> TerpRescue::getLidar() {

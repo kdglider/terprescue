@@ -32,14 +32,12 @@
 
 #include <explorer.hpp>
 
-Explorer::Explorer() {
-}
-
 // TODO Use C++ 11 style
 // for const float* i = lidarArray.begin();i != .end(); ++i 
+
 bool Explorer::detectObject(std::vector<float> lidarArray) {
     // Check LIDAR array for any readings below safeDistance
-    for (int i = 1 ; i < lidarSize ; i++) {
+    for (int i = 0 ; i < lidarSize ; i++) {
         // Reject corrupt readings
         if (std::isnan(lidarArray[i]) == false) {
             if (lidarArray[i] < safeDistance) {
@@ -51,6 +49,31 @@ bool Explorer::detectObject(std::vector<float> lidarArray) {
 
     // If no object is closer than safeDistance, return false
     return false;
+}
+
+
+void Explorer::updateLidarCosts(std::vector<float> lidarArray) {
+    int lowIndex = 0;
+	int highIndex = lidarSize;
+	int centerIndex = lidarSize/2;
+
+	// Reset costs
+	leftCost = 0;
+	rightCost = 0;
+
+	// Sweep lidarArray for all readings and update left/right costs
+	for(int i = lowIndex ; i < centerIndex ; i++) {
+		if (std::isnan(lidarArray[i]) == false && lidarArray[i] < influenceThreshold) {
+            leftCost += 1/(lidarArray[i]);
+		}
+	}
+
+	for(int i = centerIndex ; i < highIndex ; i++) {
+		if (std::isnan(lidarArray[i]) == false && lidarArray[i] < influenceThreshold) {
+            rightCost += 1/(lidarArray[i]);
+		}
+	}
+
 }
 
 

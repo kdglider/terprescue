@@ -1,4 +1,5 @@
-/**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
+/**
+ * Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       localizer.cpp
  * @date       11/23/2019
  * @brief      This class defined class of localizer which is the class calculating tags positions

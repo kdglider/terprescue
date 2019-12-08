@@ -1,4 +1,5 @@
-/**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
+/**
+ * Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       main.cpp
  * @date       11/23/2019
  * @brief      The project will explore and generate map of one unknown environment and
