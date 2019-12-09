@@ -21,8 +21,13 @@ For exploration, TerpRescue uses the explorer class, which uses obstacle weight-
 For localization and mapping, TerpRescue uses the [gmapping](http://wiki.ros.org/gmapping) ROS package, which combines LIDAR and odometry data to perform SLAM. The generated location and map are used by the explore_lite package.
 
 3) Recognition and Localization of Packages
-For QR tag recognition, TerpRescure uses the [ar_track_alvar](http://wiki.ros.org/ar_track_alvar) package from ROS, which recognizes AR tags in an image and returns the position marker. Custom code is written which transform markers from robot frame to map frame. This location is then used to modify the map from gmapping before republishing it to be visualized in RViz.
+For QR tag recognition, TerpRescure uses the [ar_track_alvar](http://wiki.ros.org/ar_track_alvar) package from ROS, which recognizes AR tags in an image and returns the position marker. Custom code is written which transform markers from robot frame to map frame and filter the . This location is then used to modify the map from gmapping before republishing it to be visualized in RViz.
 
+RQT Graphs:
+
+![RQT image](/images/terprescue_node_rqt.png)
+
+![RQT topic image](/images/terprescue_topic_rqt.png)
 
 ## Personnel
 Zuyang Cao: Student at the University of Maryland, Masters in Robotics
