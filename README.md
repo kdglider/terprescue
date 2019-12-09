@@ -37,23 +37,21 @@ This project is licensed under the BSD 3-Clause. Please see LICENSE for addition
 
 
 ## Agile Iterative Process (AIP) Logs and Notes
-AIP backlogs and work log:
-https://drive.google.com/open?id=1RF53rFKYQvgn6KD99nCPuQfjBiVyMH979sXPxVefiFI
+[AIP backlogs and work log](https://drive.google.com/open?id=1RF53rFKYQvgn6KD99nCPuQfjBiVyMH979sXPxVefiFI)
 
-AIP sprint notes and reviews:
-https://drive.google.com/open?id=1kZm0ZEUZRR4xcK7r9gMdDrfFsKHa91Pvx2rPyIjw8Uw
+[AIP sprint notes and reviews](https://drive.google.com/open?id=1kZm0ZEUZRR4xcK7r9gMdDrfFsKHa91Pvx2rPyIjw8Uw)
 
 
 ## Install Dependencies
-To be completed later
-
-
-## Build Instructions
 ``` bash
 	sudo apt-get install ros-kinetic-turtlebot3-*
 	sudo apt-get install ros-kinetic-gmapping
 	sudo apt-get install ros-kinetic-ar-track-alvar
 	sudo apt-get install ros-kinetic-rviz-visual-tools
+```
+
+## Build Instructions
+``` bash
 	mkdir -r terp_catkin/src && cd terp_catkin/src
 	git clone https://github.com/kdglider/terprescue.git
 	cd terprescue
@@ -64,7 +62,9 @@ To be completed later
  	source devel/setup.bash
 ```
 ## Run Unit Tests
-To be completed later
+``` bash
+	catkin_make run_tests
+```
 
 
 ## Run Demonstration
@@ -80,6 +80,8 @@ turtlebot stays still at spawn position. Then, in a second terminal:
 
 ## Results
 ![result image](/images/terprescue.png)
+
+[Slides](https://docs.google.com/presentation/d/13oO6MR0l_aEbyQhVjPTJkfjGrAqJLaX-ltRgInf0GAM/edit?usp=sharing) with diagrams can be found in the link.
 
 ## Notes and Known Issues
 To be completed later
