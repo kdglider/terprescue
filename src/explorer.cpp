@@ -61,19 +61,19 @@ void Explorer::updateLidarCosts() {
 
     // Sweep lidarArray for all readings and update left/right costs
     for (int i = lowIndex ; i < centerIndex ; i++) {
-      if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
-          influenceThreshold) {
-          rightCost += 1/(lidarArray[i]);
-      }
+        if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
+            influenceThreshold) {
+            rightCost += 1/(lidarArray[i]);
+        }
     }
 
     for (int i = centerIndex ; i < highIndex ; i++) {
-      if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
-          influenceThreshold) {
-            leftCost += 1/(lidarArray[i]);
-      }
+        if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
+            influenceThreshold) {
+                leftCost += 1/(lidarArray[i]);
+        }
     }
 
-    std::cout << "Left Cost: " << leftCost << std::endl;
-    std::cout << "Right Cost: " << rightCost << std::endl;
+    // std::cout << "Left Cost: " << leftCost << std::endl;
+    // std::cout << "Right Cost: " << rightCost << std::endl;
 }

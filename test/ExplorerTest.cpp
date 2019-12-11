@@ -54,5 +54,15 @@ TEST(Explorer, detectObjectTest) {
 }
 
 TEST(Explorer, updateLidarCostsTest) {
+    std::vector<float> lidarArray{6, 0.5, std::nan(), 0.5, 6};
+    int lidarSize = 5;
 
+    Explorer explorer;
+    explorer.lidarSize = lidarSize;
+    explorer.lidarArray = lidarArray;
+
+    explorer.updateLidarCosts();
+
+    EXPECT_EQ(explorer.leftCost, 2);
+    EXPECT_EQ(explorer.rightCost, 2);
 }
