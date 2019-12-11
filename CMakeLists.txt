@@ -64,22 +64,23 @@ if(CATKIN_ENABLE_TESTING)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -O0 --coverage")
 
     add_rostest_gtest(
-    terprescueTest
-    test/terprescueTesting.test
-    test/main.cpp
-    test/LocalizerTest.cpp
-    test/TerpRescueTest.cpp
+        terprescueTest
+        test/terprescueTesting.test
+        test/main.cpp
+        test/LocalizerTest.cpp
+        test/ExplorerTest.cpp
+        test/TerpRescueTest.cpp
 
-    src/localizer.cpp
-    src/terprescue.cpp
-    src/explorer.cpp
+        src/localizer.cpp
+        src/terprescue.cpp
+        src/explorer.cpp
     )
 
     target_link_libraries(terprescueTest ${catkin_LIBRARIES} ${OpenCV_LIBS})
 
     add_dependencies(
-      terprescueTest
-      terprescue
-      ${catkin_EXPORTED_TARGETS}
+        terprescueTest
+        terprescue
+        ${catkin_EXPORTED_TARGETS}
     )
 endif()

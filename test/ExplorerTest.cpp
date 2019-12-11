@@ -41,7 +41,7 @@
 
 
 TEST(Explorer, detectObjectTest) {
-    std::vector<float> lidarArray{0.5, std::nan(), 1};
+    std::vector<float> lidarArray = {0.5, std::nan(""), 1};
     int lidarSize = 3;
 
     Explorer explorer;
@@ -54,7 +54,7 @@ TEST(Explorer, detectObjectTest) {
 }
 
 TEST(Explorer, updateLidarCostsTest) {
-    std::vector<float> lidarArray{6, 0.5, std::nan(), 0.5, 6};
+    std::vector<float> lidarArray = {6, 0.5, std::nan(""), 0.5, 6};
     int lidarSize = 5;
 
     Explorer explorer;
