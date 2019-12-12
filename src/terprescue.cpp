@@ -96,7 +96,7 @@ void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs) {
     tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList,
                                                                    msgs);
     if (tagWorldTransformList.size() > 0) {
-        detectTags();
+        rejectTagOutliers();
     }
 }
 
@@ -138,7 +138,7 @@ double TerpRescue::getPointDistance(geometry_msgs::Point pointA,
     return distance;
 }
 
-void TerpRescue::detectTags() {
+void TerpRescue::rejectTagOutliers() {
     for (auto tagWorldTransform : tagWorldTransformList) {
         tf2::Vector3 tagWorldTranslation = tagWorldTransform.getOrigin();
         tag tagInWorld;

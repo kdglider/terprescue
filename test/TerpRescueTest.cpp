@@ -128,7 +128,7 @@ TEST(TerpRescue, getPointDistanceTest) {
   EXPECT_EQ(distance, 0);
 }
 
-TEST(TerpRescue, detectTagsTest) {
+TEST(TerpRescue, rejectTagOutliersTest) {
   ros::NodeHandle nh;
   ros::Rate loop_rate(10);
   ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);

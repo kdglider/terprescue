@@ -194,7 +194,7 @@ class TerpRescue {
          * @brief   use sensor datas to detect tags and get their locations
          * @return  void
          */
-        void detectTags();
+        void rejectTagOutliers();
 
         /**
          * @brief   Return current lidar data
