@@ -86,6 +86,7 @@ class TerpRescue {
 
         // Synthesized map with package locations
         nav_msgs::OccupancyGrid synthesizedMap;
+
         visualization_msgs::MarkerArray tagMarkers;
 
         std::vector<float> lidar;           // LIDAR data
@@ -97,6 +98,9 @@ class TerpRescue {
 
         nav_msgs::Odometry botOdom;         // Turtlebot Odometry information
 
+        // Robot velocity message to be published
+        geometry_msgs::Twist robotVelocity;
+
         // Default linear and turn speeds
         double defaultLinearSpeed = 0.36;    // m/s
         double defaultAngularSpeed = 0.42;   // rad/s
@@ -104,9 +108,6 @@ class TerpRescue {
         Localizer tagLocalizer;            // Instantiate a tag localizer object
 
         Explorer explorer;                  // Instantiate an Explorer object
-
-        // Robot velocity message to be published
-        geometry_msgs::Twist robotVelocity;
 
         // LIDAR subscriber
         ros::Subscriber lidarSubscriber = nh.subscribe<sensor_msgs::LaserScan>
@@ -171,18 +172,19 @@ class TerpRescue {
 
  public:
         /**
+         * @brief   Constructor of the class which published initial robot velocity
+         */
+        TerpRescue();
+        
+        /**
          * @brief   Calculates the Euclidean distance between two points
          * @param   pointA First point
          * @param   pointB Second point
          * @return  Euclidean distance as a double
          */
-        double getPointDistance(geometry_msgs::Point pointA, geometry_msgs::
-          Point pointB);
-
-        /**
-         * @brief   Constructor of the class which published initial robot velocity
-         */
-        TerpRescue();
+        double getPointDistance(
+            geometry_msgs::Point pointA, 
+            geometry_msgs::Point pointB);
 
         /**
          * @brief   display synthesized map in rviz
@@ -195,30 +197,6 @@ class TerpRescue {
          * @return  void
          */
         void rejectTagOutliers();
-
-        /**
-         * @brief   Return current lidar data
-         * @return  lidar
-         */
-        std::vector<float> getLidar();
-
-        /**
-         * @brief   Return current map data from gmapping
-         * @return  rawMap
-         */
-        nav_msgs::OccupancyGrid getRawMap();
-
-        /**
-         * @brief   Return synthesized map data include detected tags
-         * @return  synthesizedMap
-         */
-        nav_msgs::OccupancyGrid getSynthesizedMap();
-
-        /**
-         * @brief   Return current pose of robot
-         * @return  robotPose
-         */
-        geometry_msgs::Pose getRobotPose();
 
         /**
          * @brief   Return current tag list
