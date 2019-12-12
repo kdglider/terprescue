@@ -17,6 +17,7 @@ There are three main components of the TerpRescue architecture:
 For exploration, TerpRescue uses the custom Explorer class, which contains methods to detect nearby objects using the LIDAR and executing turns based on a local potential field calculated from the distance readings. See UML diagrams for more details.
 
 2) Recognition and Localization of Packages
+
 For AR tag recognition and localization, TerpRescure uses the [ar_track_alvar](http://wiki.ros.org/ar_track_alvar) package from ROS, which recognizes AR tags in an image and returns the position marker. Custom code is written in the Localizer class which transforms tag coordinates from the robot frame to the world frame. The top-level TerpRescue class also includes a method to reject outliers from the positions reported. See UML diagrams for more details.
 
 3) 2D Map Generation
