@@ -34,10 +34,10 @@
 
 bool Explorer::detectObject() {
     // Check LIDAR array for any readings below safeDistance
-    for (int i = 0 ; i < lidarSize ; i++) {
+    for (lidarReading : lidarArray) {
         // Reject corrupt readings
-        if (std::isnan(lidarArray[i]) == false) {
-            if (lidarArray[i] < safeDistance) {
+        if (std::isnan(lidarReading) == false) {
+            if (lidarReading < safeDistance) {
                 // Return true if any reading registers an object closer than
                 // safeDistance
                 return true;
@@ -60,17 +60,15 @@ void Explorer::updateLidarCosts() {
     rightCost = 0;
 
     // Sweep lidarArray for all readings and update left/right costs
-    for (int i = lowIndex ; i < centerIndex ; i++) {
-        if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
-            influenceThreshold) {
-            rightCost += 1/(lidarArray[i]);
-        }
-    }
+    for (auto it = lidarArray.begin() ; it != lidarArray.end() ; ++it) {
+        auto i = std::distance(lidarArray.begin(), it);
 
-    for (int i = centerIndex ; i < highIndex ; i++) {
-        if (std::isnan(lidarArray[i]) == false && lidarArray[i] <
-            influenceThreshold) {
-                leftCost += 1/(lidarArray[i]);
+        if (std::isnan(*it) == false && *it < influenceThreshold) {
+            if (i < centerIndex) {
+                rightCost += 1/(*it);
+            } else {
+                leftCost += 1/(*it);
+            }
         }
     }
 
