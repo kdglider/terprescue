@@ -44,6 +44,7 @@ TerpRescue::TerpRescue() {
     vel_pub.publish(robotVelocity);
 }
 
+
 void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     // Calculate lidarSize if it has not been set before
     if (explorer.lidarSize == 0) {
@@ -80,14 +81,17 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
     }
 }
 
+
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
-  rawMap = data;
-  visualization();
+    rawMap = data;
+    visualization();
 }
+
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs) {
     markerList = msgs.markers;
 }
+
 
 void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs) {
     botOdom = msgs;
@@ -129,14 +133,19 @@ void TerpRescue::visualization() {
     }
 }
 
-double TerpRescue::getPointDistance(geometry_msgs::Point pointA,
-                                    geometry_msgs::Point pointB) {
+
+double TerpRescue::getPointDistance(
+    geometry_msgs::Point pointA,
+    geometry_msgs::Point pointB) {
+
     double distanceSquare = pow(pointA.x-pointB.x, 2) +
                             pow(pointA.y-pointB.y, 2) +
                             pow(pointA.z-pointB.z, 2);
     double distance = sqrt(distanceSquare);
+
     return distance;
 }
+
 
 void TerpRescue::rejectTagOutliers() {
     for (auto tagWorldTransform : tagWorldTransformList) {
@@ -181,13 +190,16 @@ void TerpRescue::rejectTagOutliers() {
     }
 }
 
+
 std::vector<ar_track_alvar_msgs::AlvarMarker> TerpRescue::getMarkerList() {
     return markerList;
 }
 
+
 std::vector<tf2::Transform> TerpRescue::getTagWorldTransformList() {
     return tagWorldTransformList;
 }
+
 
 std::vector<TerpRescue::tag> TerpRescue::getTagList() {
     return tagList;

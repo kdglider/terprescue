@@ -51,114 +51,115 @@
  * @return     none
  */
 TEST(TerpRescue, DummyTest) {
-  EXPECT_EQ(1,1);
+    EXPECT_EQ(1,1);
 }
 
 TEST(TerpRescue, arPoseCallbackTest) {
-  ros::NodeHandle nh;
-  ros::Rate loop_rate(10);
-  ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
-  ar_track_alvar_msgs::AlvarMarkers markersMsg;
-  ar_track_alvar_msgs::AlvarMarker marker;
-  std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
-  marker.pose.pose.position.x = 1;
-  marker.pose.pose.position.y = 1;
-  marker.pose.pose.position.z = 1;
-  markerList.emplace_back(marker);
-  markersMsg.markers = markerList;
-  TerpRescue terpRescue;
-  int counter = 0;
-  while (ros::ok()) {
-    testPub.publish(markersMsg);
-    if (counter == 2) {
-      break;
+    ros::NodeHandle nh;
+    ros::Rate loop_rate(10);
+    ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
+    ar_track_alvar_msgs::AlvarMarkers markersMsg;
+    ar_track_alvar_msgs::AlvarMarker marker;
+    std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
+    marker.pose.pose.position.x = 1;
+    marker.pose.pose.position.y = 1;
+    marker.pose.pose.position.z = 1;
+    markerList.emplace_back(marker);
+    markersMsg.markers = markerList;
+    TerpRescue terpRescue;
+    int counter = 0;
+    while (ros::ok()) {
+        testPub.publish(markersMsg);
+        if (counter == 2) {
+        break;
+        }
+        ros::spinOnce();
+        loop_rate.sleep();
+        counter++;
     }
-    ros::spinOnce();
-    loop_rate.sleep();
-    counter++;
-  }
-  std::vector<ar_track_alvar_msgs::AlvarMarker> markerListTest = terpRescue.getMarkerList();
-  EXPECT_EQ(marker.pose.pose.position.x, markerListTest[0].pose.pose.position.x);
+    std::vector<ar_track_alvar_msgs::AlvarMarker> markerListTest = terpRescue.getMarkerList();
+
+    EXPECT_EQ(marker.pose.pose.position.x, markerListTest[0].pose.pose.position.x);
 }
 
 TEST(TerpRescue, botOdomCallbackTest) {
-  ros::NodeHandle nh;
-  ros::Rate loop_rate(10);
-  ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
-  ros::Publisher testOdomPub = nh.advertise<nav_msgs::Odometry>("/odom", 50);
-  ar_track_alvar_msgs::AlvarMarkers markersMsg;
-  ar_track_alvar_msgs::AlvarMarker marker;
-  nav_msgs::Odometry OdomMsgs;
-  OdomMsgs.pose.pose.position.x = 1;
-  OdomMsgs.pose.pose.position.y = 1;
-  OdomMsgs.pose.pose.position.z = 1;
-  std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
-  marker.pose.pose.position.x = 1;
-  marker.pose.pose.position.y = 1;
-  marker.pose.pose.position.z = 1;
-  markerList.emplace_back(marker);
-  markersMsg.markers = markerList;
-  TerpRescue terpRescue;
-  int counter = 0;
-  while (ros::ok()) {
-    testPub.publish(markersMsg);
-    testOdomPub.publish(OdomMsgs);
-    if (counter == 2) {
-      break;
+    ros::NodeHandle nh;
+    ros::Rate loop_rate(10);
+    ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
+    ros::Publisher testOdomPub = nh.advertise<nav_msgs::Odometry>("/odom", 50);
+    ar_track_alvar_msgs::AlvarMarkers markersMsg;
+    ar_track_alvar_msgs::AlvarMarker marker;
+    nav_msgs::Odometry OdomMsgs;
+    OdomMsgs.pose.pose.position.x = 1;
+    OdomMsgs.pose.pose.position.y = 1;
+    OdomMsgs.pose.pose.position.z = 1;
+    std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
+    marker.pose.pose.position.x = 1;
+    marker.pose.pose.position.y = 1;
+    marker.pose.pose.position.z = 1;
+    markerList.emplace_back(marker);
+    markersMsg.markers = markerList;
+    TerpRescue terpRescue;
+    int counter = 0;
+    while (ros::ok()) {
+        testPub.publish(markersMsg);
+        testOdomPub.publish(OdomMsgs);
+        if (counter == 2) {
+        break;
+        }
+        ros::spinOnce();
+        loop_rate.sleep();
+        counter++;
     }
-    ros::spinOnce();
-    loop_rate.sleep();
-    counter++;
-  }
-  auto tagList = terpRescue.getTagWorldTransformList();
-  EXPECT_EQ(tagList.size(), 1);
+    auto tagList = terpRescue.getTagWorldTransformList();
+    EXPECT_EQ(tagList.size(), 1);
 }
 
 TEST(TerpRescue, getPointDistanceTest) {
-  geometry_msgs::Point pointA;
-  geometry_msgs::Point pointB;
-  pointA.x = 1;
-  pointA.y = 1;
-  pointA.z = 1;
-  pointB.x = 1;
-  pointB.y = 1;
-  pointB.z = 1;
-  TerpRescue terpRescue;
-  auto distance = terpRescue.getPointDistance(pointA, pointB);
-  EXPECT_EQ(distance, 0);
+    geometry_msgs::Point pointA;
+    geometry_msgs::Point pointB;
+    pointA.x = 1;
+    pointA.y = 1;
+    pointA.z = 1;
+    pointB.x = 1;
+    pointB.y = 1;
+    pointB.z = 1;
+    TerpRescue terpRescue;
+    auto distance = terpRescue.getPointDistance(pointA, pointB);
+    EXPECT_EQ(distance, 0);
 }
 
 TEST(TerpRescue, rejectTagOutliersTest) {
-  ros::NodeHandle nh;
-  ros::Rate loop_rate(10);
-  ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
-  ros::Publisher testOdomPub = nh.advertise<nav_msgs::Odometry>("/odom", 50);
-  ar_track_alvar_msgs::AlvarMarkers markersMsg;
-  ar_track_alvar_msgs::AlvarMarker marker;
-  nav_msgs::Odometry OdomMsgs;
-  OdomMsgs.pose.pose.position.x = 1;
-  OdomMsgs.pose.pose.position.y = 1;
-  OdomMsgs.pose.pose.position.z = 1;
-  std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
-  marker.pose.pose.position.x = 1;
-  marker.pose.pose.position.y = 1;
-  marker.pose.pose.position.z = 1;
-  markerList.emplace_back(marker);
-  markersMsg.markers = markerList;
-  TerpRescue terpRescue;
-  int counter = 0;
-  while (ros::ok()) {
-    testPub.publish(markersMsg);
-    testOdomPub.publish(OdomMsgs);
-    if (counter == 2) {
-      break;
+    ros::NodeHandle nh;
+    ros::Rate loop_rate(10);
+    ros::Publisher testPub = nh.advertise<ar_track_alvar_msgs::AlvarMarkers>("/ar_pose_marker", 50);
+    ros::Publisher testOdomPub = nh.advertise<nav_msgs::Odometry>("/odom", 50);
+    ar_track_alvar_msgs::AlvarMarkers markersMsg;
+    ar_track_alvar_msgs::AlvarMarker marker;
+    nav_msgs::Odometry OdomMsgs;
+    OdomMsgs.pose.pose.position.x = 1;
+    OdomMsgs.pose.pose.position.y = 1;
+    OdomMsgs.pose.pose.position.z = 1;
+    std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
+    marker.pose.pose.position.x = 1;
+    marker.pose.pose.position.y = 1;
+    marker.pose.pose.position.z = 1;
+    markerList.emplace_back(marker);
+    markersMsg.markers = markerList;
+    TerpRescue terpRescue;
+    int counter = 0;
+    while (ros::ok()) {
+        testPub.publish(markersMsg);
+        testOdomPub.publish(OdomMsgs);
+        if (counter == 2) {
+        break;
+        }
+        ros::spinOnce();
+        loop_rate.sleep();
+        counter++;
     }
-    ros::spinOnce();
-    loop_rate.sleep();
-    counter++;
-  }
-  auto tagList = terpRescue.getTagList();
-  EXPECT_EQ(tagList.size(), 1);
+    auto tagList = terpRescue.getTagList();
+    EXPECT_EQ(tagList.size(), 1);
 }
 
 

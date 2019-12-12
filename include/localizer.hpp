@@ -56,16 +56,16 @@ class Localizer {
          * @return  True/False depending on if there is an AR tag in the
                     current camera frame
          */
-        bool recognizeTag(std::vector<ar_track_alvar_msgs::AlvarMarker>
-                          markerList);
+        bool recognizeTag(
+            std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
 
         /**
          * @brief   Localize AR tag with respect to robot frame
          * @param   markerList List of AR marker messages
          * @return  List of tf2::Transform objects that represent each tag's pose in the robot frame
          */
-        std::vector<tf2::Transform> locateTag(std::vector<ar_track_alvar_msgs::
-                                              AlvarMarker> markerList);
+        std::vector<tf2::Transform> locateTag(
+            std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
 
         /**
          * @brief   Tranform tag locations from robot frame to world frame
@@ -73,9 +73,9 @@ class Localizer {
          * @param   odomMsg Contains the current pose of robot
          * @return  List of tf2::Transform objects that represent each tag's pose in the world frame
          */
-        std::vector<tf2::Transform> transformationTagPosition(const std::vector<
-          ar_track_alvar_msgs::AlvarMarker> &markerList,
-          const nav_msgs::Odometry odomMsg);
+        std::vector<tf2::Transform> transformationTagPosition(
+            const std::vector<ar_track_alvar_msgs::AlvarMarker> &markerList,
+            const nav_msgs::Odometry odomMsg);
 };
 
 #endif  // INCLUDE_LOCALIZER_HPP_
