@@ -1,4 +1,5 @@
-/**Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
+/**
+ * Copyright (c) 2019 Jing Liang, Kevin Dong, Zuyang Cao
  * @file       localizer.hpp
  * @date       11/23/2019
  * @brief      This class defined class of localizer which is the class calculating tags positions
@@ -30,12 +31,17 @@
  *             OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef INCLUDE_LOCALIZER_H_
-#define INCLUDE_LOCALIZER_H_
+#ifndef INCLUDE_LOCALIZER_HPP_
+#define INCLUDE_LOCALIZER_HPP_
 
 #include <ros/ros.h>
 #include <geometry_msgs/Pose.h>
-#include <sensor_msgs/Image.h>
+#include <ar_track_alvar_msgs/AlvarMarker.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Transform.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <nav_msgs/Odometry.h>
 #include <vector>
 
 /**
@@ -43,51 +49,33 @@
  *        recognize tags and get tags' location and ID
  */
 class Localizer {
- private:
-    // tagInfo is the information of each tag, which include tag id and position
-    struct tagInfo {
-        int ID;
-        geometry_msgs::Pose position;
-    };
-
-    std::vector<tagInfo> tags;  // vector of all tags information
-    std::vector<float> lidar;
-    sensor_msgs::Image camera;
-
-    /**
-     * @brief    recognize if there is a tag in the current image
-     * @return   bool
-     */
-    bool tagRecognition();
-
-    /**
-     * @brief    locate tag regarding to robot frame
-     * @return   void
-     */
-    void locateTag();
-
-    /**
-     * @brief    tranform tag location from robot frame to map frame
-     * @return   void
-     */
-    void transformationTagPosition();
-
  public:
-    /**
-     * @brief    This function detects tags and also save tags information in a vector
-     * @param    lidar data: vector<float>
-     * @param    image data: sensor_msgs::Image
-     * @param    robot's currentLocation: geometry_msgs::Pose
-     * @return   void
-     */
-    void tagDetection(sensor_msgs::Image image, std::vector<float> lidar, geometry_msgs::Pose currentLocation);
+        /**
+         * @brief   Recognize if there is a tag in the current image
+         * @param   markerList List of AR marker messages
+         * @return  True/False depending on if there is an AR tag in the
+                    current camera frame
+         */
+        bool recognizeTag(
+            std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
 
-    /**
-     * @brief    return current detected tags' information
-     * @return   a vector of tags' information
-     */
-    std::vector<tagInfo> getTagInfo();
+        /**
+         * @brief   Localize AR tag with respect to robot frame
+         * @param   markerList List of AR marker messages
+         * @return  List of tf2::Transform objects that represent each tag's pose in the robot frame
+         */
+        std::vector<tf2::Transform> locateTag(
+            std::vector<ar_track_alvar_msgs::AlvarMarker> markerList);
+
+        /**
+         * @brief   Tranform tag locations from robot frame to world frame
+         * @param   markerList List of AR marker messages
+         * @param   odomMsg Contains the current pose of robot
+         * @return  List of tf2::Transform objects that represent each tag's pose in the world frame
+         */
+        std::vector<tf2::Transform> transformationTagPosition(
+            const std::vector<ar_track_alvar_msgs::AlvarMarker> &markerList,
+            const nav_msgs::Odometry odomMsg);
 };
 
-
-#endif  // INCLUDE_LOCALIZER_H_
+#endif  // INCLUDE_LOCALIZER_HPP_

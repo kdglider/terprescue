@@ -1,0 +1,7 @@
+Done processing src/explorer.cpp
+Done processing src/localizer.cpp
+Done processing src/terprescue.cpp
+Done processing src/main.cpp
+Done processing include/explorer.hpp
+Done processing include/localizer.hpp
+Done processing include/terprescue.hpp

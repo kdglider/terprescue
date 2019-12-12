@@ -1,0 +1,4 @@
+<launch>
+  <node pkg="terprescue" name="terprescue"  type="terprescue" />
+  <test pkg="terprescue" test-name="terprescueTest" type="terprescueTest" />
+</launch>

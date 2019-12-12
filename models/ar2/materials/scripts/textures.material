@@ -1,0 +1,13 @@
+material AR2
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture ar2.png
+      }
+    }
+  }
+}

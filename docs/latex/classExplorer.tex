@@ -1,0 +1,61 @@
+\hypertarget{classExplorer}{}\section{Explorer Class Reference}
+\label{classExplorer}\index{Explorer@{Explorer}}
+
+
+This class contains methods to help the robot navigate and explore the environment.  
+
+
+
+
+{\ttfamily \#include $<$explorer.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{classExplorer_a78d779c3481f8efdac866b8d7f5065db}{detect\+Object} ()
+\begin{DoxyCompactList}\small\item\em Checks to see if an object is close to the robot. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classExplorer_a22c40f735fe750a4e31d31b043e76d57}\label{classExplorer_a22c40f735fe750a4e31d31b043e76d57}} 
+void \hyperlink{classExplorer_a22c40f735fe750a4e31d31b043e76d57}{update\+Lidar\+Costs} ()
+\begin{DoxyCompactList}\small\item\em Calculates and updates the left and right costs of the L\+I\+D\+AR readings. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classExplorer_acc1dfe135405abb0dfbf8815b1e54176}\label{classExplorer_acc1dfe135405abb0dfbf8815b1e54176}} 
+int {\bfseries lidar\+Size} = 0
+\item 
+\mbox{\Hypertarget{classExplorer_a4c6d55edb8100d0078995a58ba52665e}\label{classExplorer_a4c6d55edb8100d0078995a58ba52665e}} 
+std\+::vector$<$ float $>$ {\bfseries lidar\+Array}
+\item 
+\mbox{\Hypertarget{classExplorer_aab17793b6fdb8219483829f98a86b899}\label{classExplorer_aab17793b6fdb8219483829f98a86b899}} 
+double {\bfseries cost\+Tolerance} = 5
+\item 
+\mbox{\Hypertarget{classExplorer_a75e969d800f9f880ef7738f24b21ed84}\label{classExplorer_a75e969d800f9f880ef7738f24b21ed84}} 
+double {\bfseries left\+Cost} = 0
+\item 
+\mbox{\Hypertarget{classExplorer_a173d158afbaf753a6736403577dda99b}\label{classExplorer_a173d158afbaf753a6736403577dda99b}} 
+double {\bfseries right\+Cost} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+This class contains methods to help the robot navigate and explore the environment. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classExplorer_a78d779c3481f8efdac866b8d7f5065db}\label{classExplorer_a78d779c3481f8efdac866b8d7f5065db}} 
+\index{Explorer@{Explorer}!detect\+Object@{detect\+Object}}
+\index{detect\+Object@{detect\+Object}!Explorer@{Explorer}}
+\subsubsection{\texorpdfstring{detect\+Object()}{detectObject()}}
+{\footnotesize\ttfamily bool Explorer\+::detect\+Object (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Checks to see if an object is close to the robot. 
+
+\begin{DoxyReturn}{Returns}
+True/\+False depending on if an object is within the safe distance 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{explorer_8hpp}{explorer.\+hpp}\end{DoxyCompactItemize}
