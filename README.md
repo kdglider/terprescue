@@ -58,37 +58,38 @@ The ROS Kinetic full desktop version can be installed using these instructions: 
 
 After installing ROS, use the following commands to install the other necessary packages:
 ``` bash
-	sudo apt-get install ros-kinetic-turtlebot3-*
-	sudo apt-get install ros-kinetic-gmapping
-	sudo apt-get install ros-kinetic-ar-track-alvar
-	sudo apt-get install ros-kinetic-rviz-visual-tools
+sudo apt-get install ros-kinetic-turtlebot3-*
+sudo apt-get install ros-kinetic-gmapping
+sudo apt-get install ros-kinetic-ar-track-alvar
+sudo apt-get install ros-kinetic-rviz-visual-tools
 ```
 
 ## Build Instructions
 Create a new directory on the local system to designate as the Catkin workspace and create another directory called "src" within it (eg. catkin_ws/src). Clone the project into the src directory:
 ``` bash
-    git clone https://github.com/kdglider/terprescue.git
+git clone https://github.com/kdglider/terprescue.git
 ```
 
 From the catkin_ws/src directory, change directory into the terprescue repository and update the GAZEBO_MODEL_PATH to include our models:
 ``` bash
-	cd terprescue
-	export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(pwd)/models
+cd terprescue
+export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(pwd)/models
 ```
 
 Change directory back up to catkin_ws, build the code and run the setup script:
 ``` bash
-	cd ../..
-	catkin_make
- 	source devel/setup.bash
+cd ../..
+catkin_make
+source devel/setup.bash
 ```
 
 ## Run Doxygen File
-To install Doxygen
+To install Doxygen, use:
 ```
 sudo apt install doxygen
 ```
-To generate the Doxygen documentation: go to package folder
+
+To generate the Doxygen documentation, execute the following command in the package folder
 ```
 doxygen ./doxygen
 ````
@@ -97,19 +98,19 @@ doxygen ./doxygen
 ## Run Unit Tests
 To run our unit tests (optional), append run_tests after the catkin_make command:
 ``` bash
-	catkin_make run_tests
+catkin_make run_tests
 ```
 
 
 ## Run Demonstration
 To run the demonstration with our sample environment, open two terminals. In the first terminal, launch the Gazebo environment:
 ``` bash
-	roslaunch terprescue environment_bring_up.launch
+roslaunch terprescue environment_bring_up.launch
 ```
 
 After Gazebo and Rviz finishes loading properly, launch the terprescue node and gmapping in the second terminal:
 ```bash
-	roslaunch terprescue terprescue.launch
+roslaunch terprescue terprescue.launch
 ```
 
 The robot will begin exploration and a map will be generated in RViz with the package locations as red dots.

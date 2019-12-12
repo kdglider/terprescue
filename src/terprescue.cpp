@@ -36,8 +36,10 @@
 #include <terprescue.hpp>
 
 TerpRescue::TerpRescue() {
+    // Set publishing rate to 10 Hz
     ros::Rate loop_rate(10);
 
+    // Set and publish initial robot velocity to move forward
     robotVelocity.linear.x = defaultLinearSpeed;
     robotVelocity.angular.z = 0;
 
@@ -63,11 +65,11 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
         robotVelocity.angular.z = defaultAngularSpeed;
         vel_pub.publish(robotVelocity);
 
-    // Check if an object is within the safe distance or if 
+    // Check if an object is within the safe distance or if
     // either the left/right costs are too high
     } else if (explorer.detectObject() == true || explorer.leftCost > 80 ||
                explorer.rightCost > 80) {
-        // Change velcity profile to turn left or right 
+        // Change velcity profile to turn left or right
         // depending on the LIDAR costs
         if (explorer.leftCost < explorer.rightCost) {
             robotVelocity.linear.x = 0;
@@ -89,22 +91,31 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
 
 
 void TerpRescue::mapCallback(const nav_msgs::OccupancyGrid data) {
+    // Update rawMap with new data from gmapping
     rawMap = data;
+
+    // Update synthesized map
     visualization();
 }
 
 
 void TerpRescue::arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs) {
+    // Update markerList with current AR markers in camera frame
     markerList = msgs.markers;
 }
 
 
 void TerpRescue::botOdomCallback(const nav_msgs::Odometry msgs) {
+    // Update botOdom with new subscribed message
     botOdom = msgs;
     auto botPosition = botOdom.pose.pose.position;
     auto botOrientation = botOdom.pose.pose.orientation;
-    tagWorldTransformList = tagLocalizer.transformationTagPosition(markerList,
-                                                                   msgs);
+
+    // Localize tags in current markerList
+    tagWorldTransformList =
+        tagLocalizer.transformationTagPosition(markerList, msgs);
+
+    // Reject outliers if the localized tag list is not empty
     if (tagWorldTransformList.size() > 0) {
         rejectTagOutliers();
     }
@@ -116,6 +127,8 @@ void TerpRescue::visualization() {
         std::cout << tagList.size() << std::endl;
         tagMarkers.markers.clear();
         tagPublisher.publish(tagMarkers);
+
+        // Create new visualization markers for each tag in tagList
         for (auto tag : tagList) {
             if (tag.positionCount < 75) {
               continue;
@@ -133,7 +146,10 @@ void TerpRescue::visualization() {
             tagMarker.scale.y = 0.5;
             tagMarkers.markers.push_back(tagMarker);
         }
+
+        // Publish visualization markers
         tagPublisher.publish(tagMarkers);
+
     } else {
         ROS_INFO_STREAM("No tag detected!");
     }
@@ -144,6 +160,7 @@ double TerpRescue::getPointDistance(
     geometry_msgs::Point pointA,
     geometry_msgs::Point pointB) {
 
+    // Calculate Euclidean distance
     double distanceSquare = pow(pointA.x-pointB.x, 2) +
                             pow(pointA.y-pointB.y, 2) +
                             pow(pointA.z-pointB.z, 2);
@@ -159,10 +176,14 @@ void TerpRescue::rejectTagOutliers() {
         tag tagInWorld;
         tagInWorld.ID = tagList.size();
         tagInWorld.positionCount = 0;
+
+        // Create tagPoint to perform comparisons
         geometry_msgs::Point tagPoint;
         tagPoint.x = tagWorldTranslation.getX();
         tagPoint.y = tagWorldTranslation.getY();
         tagPoint.z = tagWorldTranslation.getZ();
+
+        // Reject tagPoint if certain values exceed thresholds
         if (tagPoint.z < 0 || tagPoint.z > 0.8) {
             continue;
         }
@@ -172,7 +193,12 @@ void TerpRescue::rejectTagOutliers() {
         if (tagPoint.y < -8 || tagPoint.y > 1.5) {
             continue;
         }
+
+        // Set all z values to be the same since it is a 2D map
         tagPoint.z = 0.1;
+
+        // Compare tagPoint to all current tags in tagList
+        // Update position if it belongs to an existing package
         tagInWorld.tagPoint = tagPoint;
         double minDistance = 20;
         for (auto &tagItem : tagList) {
@@ -190,6 +216,8 @@ void TerpRescue::rejectTagOutliers() {
                                       tagPoint.y)/(tagItem.positionCount + 1);
             }
         }
+
+        // If tagPoint is far away from other tags, treat it as a new tag
         if (minDistance > 2) {
             tagList.emplace_back(tagInWorld);
         }

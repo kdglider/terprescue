@@ -36,6 +36,7 @@
 int main(int argc, char **argv) {
     ros::init(argc, argv, "terprescue");
 
+    // Create TerpRescue object that automatically starts the ROS node
     TerpRescue terpRescue;
 
     // boost::thread t = boost::thread(boost::bind(&ros::spin));

@@ -73,12 +73,12 @@ class TerpRescue {
 
         // Structure of a tag; contains the ID and pose
         struct tag{
-            int ID;                          // Decoded tag ID
+            int ID;                             // Decoded tag ID
             int positionCount;
-            geometry_msgs::Point tagPoint;    // Tag pose in the world frame
+            geometry_msgs::Point tagPoint;      // Tag pose in the world frame
         };
 
-        std::vector<tag> tagList;         // List of all located tags (packages)
+        std::vector<tag> tagList;       // List of all located tags (packages)
 
         geometry_msgs::Pose robotPose;      // Current robot pose
 
@@ -91,8 +91,6 @@ class TerpRescue {
 
         std::vector<float> lidar;           // LIDAR data
 
-        // sensor_msgs::Image cameraImage;     // Camera image data
-
         // AR markers list data
         std::vector<ar_track_alvar_msgs::AlvarMarker> markerList;
 
@@ -102,10 +100,10 @@ class TerpRescue {
         geometry_msgs::Twist robotVelocity;
 
         // Default linear and turn speeds
-        double defaultLinearSpeed = 0.36;    // m/s
-        double defaultAngularSpeed = 0.42;   // rad/s
+        double defaultLinearSpeed = 0.36;       // m/s
+        double defaultAngularSpeed = 0.42;      // rad/s
 
-        Localizer tagLocalizer;            // Instantiate a tag localizer object
+        Localizer tagLocalizer;             // Instantiate a Localizer object
 
         Explorer explorer;                  // Instantiate an Explorer object
 
@@ -136,36 +134,29 @@ class TerpRescue {
 
 
         /**
-         * @brief   callback function of lidar
-         * @param   lidar data: sensor_msgs::LaserScan
+         * @brief   LIDAR callback function
+         * @param   msg sensor_msgs::LaserScan
          * @return  void
          */
         void lidarCallback(const sensor_msgs::LaserScan msg);
 
         /**
-         * @brief   callback function of camera
-         * @param   lidar data: sensor_msgs::Image
-         * @return  void
-         */
-        // void cameraCallback(const sensor_msgs::Image data);
-
-        /**
-         * @brief   callback function of map
-         * @param   lidar data: nav_msgs::OccupancyGrid
+         * @brief   Map callback function
+         * @param   data nav_msgs::OccupancyGrid
          * @return  void
          */
         void mapCallback(const nav_msgs::OccupancyGrid data);
 
         /**
-         * @brief   callback function of odom
-         * @param   lidar data: nav_msgs::Odometry
+         * @brief   Odometry callback function
+         * @param   msgs nav_msgs::Odometry
          * @return  void
          */
         void botOdomCallback(const nav_msgs::Odometry msgs);
 
         /**
-         * @brief   callback function of AR
-         * @param   AR data: ar_track_alvar_msgs::AlvarMarkers
+         * @brief   AR tag callback function
+         * @param   msgs ar_track_alvar_msgs::AlvarMarkers
          * @return  void
          */
         void arPoseCallback(const ar_track_alvar_msgs::AlvarMarkers msgs);
@@ -175,7 +166,7 @@ class TerpRescue {
          * @brief   Constructor of the class which published initial robot velocity
          */
         TerpRescue();
-        
+
         /**
          * @brief   Calculates the Euclidean distance between two points
          * @param   pointA First point
@@ -183,17 +174,17 @@ class TerpRescue {
          * @return  Euclidean distance as a double
          */
         double getPointDistance(
-            geometry_msgs::Point pointA, 
+            geometry_msgs::Point pointA,
             geometry_msgs::Point pointB);
 
         /**
-         * @brief   display synthesized map in rviz
+         * @brief   Displays the synthesized map in RViz
          * @return  void
          */
         void visualization();
 
         /**
-         * @brief   use sensor datas to detect tags and get their locations
+         * @brief   Reject outlier tag positions from tagWorldTransformList
          * @return  void
          */
         void rejectTagOutliers();

@@ -38,6 +38,7 @@ bool Localizer::recognizeTag(
 
     int markerSize = markerList.size();
 
+    // If markerList is not empty, reject error readings
     if (markerSize == 0) {
         ROS_INFO_STREAM("No Tag In Sight.");
         return false;
@@ -54,6 +55,7 @@ bool Localizer::recognizeTag(
             }
         }
 
+        // Return true if markerList is still not empty
         if (markerSize <= 0) {
             ROS_INFO_STREAM("No Tag In Sight.");
             return false;
@@ -67,7 +69,10 @@ bool Localizer::recognizeTag(
 std::vector<tf2::Transform> Localizer::locateTag(
     std::vector <ar_track_alvar_msgs::AlvarMarker> markerList) {
 
+    // Create new tagTransformList to return
     std::vector<tf2::Transform> tagTransformList;
+
+    // Create new Transform objects from markers and add to tagTransformList
     if (recognizeTag(markerList)) {
         for (auto marker : markerList) {
             const geometry_msgs::PoseStamped arPoseStamped = marker.pose;
@@ -101,10 +106,14 @@ std::vector<tf2::Transform> Localizer::transformationTagPosition(
     const std::vector<ar_track_alvar_msgs::AlvarMarker> &markerList,
     const nav_msgs::Odometry odomMsg) {
 
-    std::vector<tf2::Transform> tagTransformList;
+    // Create new tagWorldTransformList to return
     std::vector<tf2::Transform> tagWorldTransformList;
+
+    // Get current tagTransformList using locateTag()
+    std::vector<tf2::Transform> tagTransformList;
     tagTransformList = locateTag(markerList);
 
+    // Transform tag coordinates to world frame using robot odometry data
     if (tagTransformList.size() > 0) {
         auto botPosition = odomMsg.pose.pose.position;
         auto botOrientation = odomMsg.pose.pose.orientation;
