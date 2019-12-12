@@ -1,0 +1,125 @@
+\hypertarget{classTerpRescue}{}\section{Terp\+Rescue Class Reference}
+\label{classTerpRescue}\index{Terp\+Rescue@{Terp\+Rescue}}
+
+
+The class has functions to subscribe all sensor data and also calculate tag location and display map in R\+Viz.  
+
+
+
+
+{\ttfamily \#include $<$terprescue.\+hpp$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classTerpRescue_acf8ace51475d84de22e3b590b1d4acf2}\label{classTerpRescue_acf8ace51475d84de22e3b590b1d4acf2}} 
+\hyperlink{classTerpRescue_acf8ace51475d84de22e3b590b1d4acf2}{Terp\+Rescue} ()
+\begin{DoxyCompactList}\small\item\em Constructor of the class which published initial robot velocity. \end{DoxyCompactList}\item 
+double \hyperlink{classTerpRescue_aa0f293d50d30f9e3b0fab412e3392ffd}{get\+Point\+Distance} (geometry\+\_\+msgs\+::\+Point pointA, geometry\+\_\+msgs\+::\+Point pointB)
+\begin{DoxyCompactList}\small\item\em Calculates the Euclidean distance between two points. \end{DoxyCompactList}\item 
+void \hyperlink{classTerpRescue_ae961a3e24e9ecd48ca2d8bb377955e46}{visualization} ()
+\begin{DoxyCompactList}\small\item\em display synthesized map in rviz \end{DoxyCompactList}\item 
+void \hyperlink{classTerpRescue_af95c5deb5e883e5986f957f42a89041e}{reject\+Tag\+Outliers} ()
+\begin{DoxyCompactList}\small\item\em use sensor datas to detect tags and get their locations \end{DoxyCompactList}\item 
+std\+::vector$<$ tag $>$ \hyperlink{classTerpRescue_ae1d56c14d74089c5e779cf94ed20adf9}{get\+Tag\+List} ()
+\begin{DoxyCompactList}\small\item\em Return current tag list. \end{DoxyCompactList}\item 
+std\+::vector$<$ ar\+\_\+track\+\_\+alvar\+\_\+msgs\+::\+Alvar\+Marker $>$ \hyperlink{classTerpRescue_af8d3ac4ae6ce279b003702e5b3b1e391}{get\+Marker\+List} ()
+\begin{DoxyCompactList}\small\item\em Return current marker\+List. \end{DoxyCompactList}\item 
+std\+::vector$<$ tf2\+::\+Transform $>$ \hyperlink{classTerpRescue_a390972c728cc524757421808e37f3bc2}{get\+Tag\+World\+Transform\+List} ()
+\begin{DoxyCompactList}\small\item\em Return current tag transform in world frame. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+The class has functions to subscribe all sensor data and also calculate tag location and display map in R\+Viz. 
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classTerpRescue_af8d3ac4ae6ce279b003702e5b3b1e391}\label{classTerpRescue_af8d3ac4ae6ce279b003702e5b3b1e391}} 
+\index{Terp\+Rescue@{Terp\+Rescue}!get\+Marker\+List@{get\+Marker\+List}}
+\index{get\+Marker\+List@{get\+Marker\+List}!Terp\+Rescue@{Terp\+Rescue}}
+\subsubsection{\texorpdfstring{get\+Marker\+List()}{getMarkerList()}}
+{\footnotesize\ttfamily std\+::vector$<$ar\+\_\+track\+\_\+alvar\+\_\+msgs\+::\+Alvar\+Marker$>$ Terp\+Rescue\+::get\+Marker\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Return current marker\+List. 
+
+\begin{DoxyReturn}{Returns}
+marker\+List 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTerpRescue_aa0f293d50d30f9e3b0fab412e3392ffd}\label{classTerpRescue_aa0f293d50d30f9e3b0fab412e3392ffd}} 
+\index{Terp\+Rescue@{Terp\+Rescue}!get\+Point\+Distance@{get\+Point\+Distance}}
+\index{get\+Point\+Distance@{get\+Point\+Distance}!Terp\+Rescue@{Terp\+Rescue}}
+\subsubsection{\texorpdfstring{get\+Point\+Distance()}{getPointDistance()}}
+{\footnotesize\ttfamily double Terp\+Rescue\+::get\+Point\+Distance (\begin{DoxyParamCaption}\item[{geometry\+\_\+msgs\+::\+Point}]{pointA,  }\item[{geometry\+\_\+msgs\+::\+Point}]{pointB }\end{DoxyParamCaption})}
+
+
+
+Calculates the Euclidean distance between two points. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pointA} & First point \\
+\hline
+{\em pointB} & Second point \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Euclidean distance as a double 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTerpRescue_ae1d56c14d74089c5e779cf94ed20adf9}\label{classTerpRescue_ae1d56c14d74089c5e779cf94ed20adf9}} 
+\index{Terp\+Rescue@{Terp\+Rescue}!get\+Tag\+List@{get\+Tag\+List}}
+\index{get\+Tag\+List@{get\+Tag\+List}!Terp\+Rescue@{Terp\+Rescue}}
+\subsubsection{\texorpdfstring{get\+Tag\+List()}{getTagList()}}
+{\footnotesize\ttfamily std\+::vector$<$tag$>$ Terp\+Rescue\+::get\+Tag\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Return current tag list. 
+
+\begin{DoxyReturn}{Returns}
+tag\+List 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTerpRescue_a390972c728cc524757421808e37f3bc2}\label{classTerpRescue_a390972c728cc524757421808e37f3bc2}} 
+\index{Terp\+Rescue@{Terp\+Rescue}!get\+Tag\+World\+Transform\+List@{get\+Tag\+World\+Transform\+List}}
+\index{get\+Tag\+World\+Transform\+List@{get\+Tag\+World\+Transform\+List}!Terp\+Rescue@{Terp\+Rescue}}
+\subsubsection{\texorpdfstring{get\+Tag\+World\+Transform\+List()}{getTagWorldTransformList()}}
+{\footnotesize\ttfamily std\+::vector$<$tf2\+::\+Transform$>$ Terp\+Rescue\+::get\+Tag\+World\+Transform\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Return current tag transform in world frame. 
+
+\begin{DoxyReturn}{Returns}
+tag\+World\+Transform\+List 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTerpRescue_af95c5deb5e883e5986f957f42a89041e}\label{classTerpRescue_af95c5deb5e883e5986f957f42a89041e}} 
+\index{Terp\+Rescue@{Terp\+Rescue}!reject\+Tag\+Outliers@{reject\+Tag\+Outliers}}
+\index{reject\+Tag\+Outliers@{reject\+Tag\+Outliers}!Terp\+Rescue@{Terp\+Rescue}}
+\subsubsection{\texorpdfstring{reject\+Tag\+Outliers()}{rejectTagOutliers()}}
+{\footnotesize\ttfamily void Terp\+Rescue\+::reject\+Tag\+Outliers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+use sensor datas to detect tags and get their locations 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classTerpRescue_ae961a3e24e9ecd48ca2d8bb377955e46}\label{classTerpRescue_ae961a3e24e9ecd48ca2d8bb377955e46}} 
+\index{Terp\+Rescue@{Terp\+Rescue}!visualization@{visualization}}
+\index{visualization@{visualization}!Terp\+Rescue@{Terp\+Rescue}}
+\subsubsection{\texorpdfstring{visualization()}{visualization()}}
+{\footnotesize\ttfamily void Terp\+Rescue\+::visualization (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+display synthesized map in rviz 
+
+\begin{DoxyReturn}{Returns}
+void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/\hyperlink{terprescue_8hpp}{terprescue.\+hpp}\end{DoxyCompactItemize}

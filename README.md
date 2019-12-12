@@ -83,6 +83,16 @@ Change directory back up to catkin_ws, build the code and run the setup script:
  	source devel/setup.bash
 ```
 
+## Run Doxygen File
+To install Doxygen
+```
+sudo apt install doxygen
+```
+To generate the Doxygen documentation: go to package folder
+```
+doxygen ./doxygen
+````
+
 
 ## Run Unit Tests
 To run our unit tests (optional), append run_tests after the catkin_make command:
