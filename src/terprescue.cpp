@@ -52,17 +52,22 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
         explorer.lidarSize = lidarSize;
     }
 
+    // Update LIDAR left and right costs
     explorer.lidarArray = msg.ranges;
     explorer.updateLidarCosts();
 
+    // Check if the total cost exceeds a threshold
+    // This helps the robot get out of corners
     if (explorer.leftCost + explorer.rightCost > 135) {
         robotVelocity.linear.x = 0;
         robotVelocity.angular.z = defaultAngularSpeed;
         vel_pub.publish(robotVelocity);
+
+    // Check if an object is within the safe distance or if 
+    // either the left/right costs are too high
     } else if (explorer.detectObject() == true || explorer.leftCost > 80 ||
                explorer.rightCost > 80) {
-        // Turn to avoid the object if one is within the safe distance
-        // Change velcity profile to turn left or right
+        // Change velcity profile to turn left or right 
         // depending on the LIDAR costs
         if (explorer.leftCost < explorer.rightCost) {
             robotVelocity.linear.x = 0;
@@ -73,6 +78,7 @@ void TerpRescue::lidarCallback(const sensor_msgs::LaserScan msg) {
         }
 
         vel_pub.publish(robotVelocity);
+
     } else {
         // Change velocity profile back to moving forward
         robotVelocity.linear.x = defaultLinearSpeed;
